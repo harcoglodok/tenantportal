@@ -20,7 +20,7 @@ class CreateBillingTransactionsTable extends Migration
             $table->foreignId('user_id')->constrained()->onDelete('cascade');
             $table->string('image');
             $table->enum('status', ['pending', 'approved', 'declined'])->default('pending');
-            $table->foreignId('admin_id')->constrained('users', 'id')->nullable();
+            $table->foreignId('verified_by')->nullable()->constrained('users', 'id');
             $table->string('message');
             $table->timestamps();
             $table->softDeletes();

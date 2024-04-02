@@ -15,15 +15,15 @@ class CreateUsersTable extends Migration
     {
         Schema::create('users', function (Blueprint $table) {
             $table->id();
-            $table->string('username');
+            $table->string('name');
             $table->string('device_token')->nullable();
             $table->string('email')->unique();
             $table->string('business_id')->nullable();
-            $table->date('birthdate');
+            $table->date('birthdate')->nullable();
             $table->timestamp('verified_at')->nullable();
-            $table->foreignId('verified_by')->constrained('users', 'id')->nullable();
+            $table->foreignId('verified_by')->nullable()->constrained('users', 'id');
             $table->timestamp('blocked_at')->nullable();
-            $table->foreignId('blocked_by')->constrained('users', 'id')->nullable();
+            $table->foreignId('blocked_by')->nullable()->constrained('users', 'id');
             $table->string('block_message')->nullable();
             $table->enum('role', ['root', 'admin', 'tenant'])->default('tenant');
             $table->string('password');

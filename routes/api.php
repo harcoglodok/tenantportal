@@ -27,3 +27,6 @@ Route::resource('complaint_categories', App\Http\Controllers\API\v1\ComplaintCat
 
 
 Route::resource('complaints', App\Http\Controllers\API\v1\ComplaintAPIController::class);
+
+
+Route::resource('complaint_replies', App\Http\Controllers\API\v1\ComplaintReplyAPIController::class);

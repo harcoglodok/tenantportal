@@ -2,26 +2,22 @@
 
 namespace App\Repositories;
 
-use App\Models\Complaint;
+use App\Models\ComplaintReply;
 use App\Repositories\BaseRepository;
 
 /**
- * Class ComplaintRepository
+ * Class ComplaintReplyRepository
  * @package App\Repositories
- * @version April 2, 2024, 7:08 am UTC
+ * @version April 2, 2024, 7:18 am UTC
 */
 
-class ComplaintRepository extends BaseRepository
+class ComplaintReplyRepository extends BaseRepository
 {
     /**
      * @var array
      */
     protected $fieldSearchable = [
-        'content',
-        'photo',
-        'status',
-        'created_by',
-        'updated_by'
+        'reply'
     ];
 
     /**
@@ -39,6 +35,6 @@ class ComplaintRepository extends BaseRepository
      **/
     public function model()
     {
-        return Complaint::class;
+        return ComplaintReply::class;
     }
 }

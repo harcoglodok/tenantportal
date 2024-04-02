@@ -18,6 +18,7 @@ class CreateComplaintsTable extends Migration
             $table->id();
             $table->text('content');
             $table->string('photo', 50);
+            $table->enum('status', ['waiting','replied','done']);
             $table->string('created_by', 50);
             $table->string('updated_by', 50);
             $table->timestamps();

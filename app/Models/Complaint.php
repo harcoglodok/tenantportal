@@ -23,7 +23,7 @@ class Complaint extends Model
 
 
     public $table = 'complaints';
-    
+
 
     protected $dates = ['deleted_at'];
 
@@ -33,6 +33,7 @@ class Complaint extends Model
         'category_id',
         'content',
         'photo',
+        'status',
         'created_by',
         'updated_by'
     ];
@@ -45,6 +46,7 @@ class Complaint extends Model
     protected $casts = [
         'category_id' => 'integer',
         'content' => 'string',
+        'status' => 'string',
         'photo' => 'string',
         'created_by' => 'string',
         'updated_by' => 'string'
@@ -58,10 +60,9 @@ class Complaint extends Model
     public static $rules = [
         'category_id' => 'required',
         'content' => 'required',
+        'status' => 'required',
         'photo' => 'image|mimes:jpeg,png,jpg,gif|max:8192',
         'created_by' => 'required',
         'updated_by' => 'required'
     ];
-
-    
 }

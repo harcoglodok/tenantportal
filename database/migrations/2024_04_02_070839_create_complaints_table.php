@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateComplaintCategoriesTable extends Migration
+class CreateComplaintsTable extends Migration
 {
 
     /**
@@ -14,11 +14,15 @@ class CreateComplaintCategoriesTable extends Migration
      */
     public function up()
     {
-        Schema::create('complaint_categories', function (Blueprint $table) {
+        Schema::create('complaints', function (Blueprint $table) {
             $table->id();
-            $table->string('title');
+            $table->text('content');
+            $table->string('photo', 50);
+            $table->string('created_by', 50);
+            $table->string('updated_by', 50);
             $table->timestamps();
             $table->softDeletes();
+            $table->foreignId('category_id')->constrained('complaint_categories', 'id');
         });
     }
 
@@ -29,6 +33,6 @@ class CreateComplaintCategoriesTable extends Migration
      */
     public function down()
     {
-        Schema::drop('complaint_categories');
+        Schema::drop('complaints');
     }
 }

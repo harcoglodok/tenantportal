@@ -24,3 +24,6 @@ Route::resource('banners', BannerAPIController::class);
 
 
 Route::resource('complaint_categories', App\Http\Controllers\API\v1\ComplaintCategoryAPIController::class);
+
+
+Route::resource('complaints', App\Http\Controllers\API\v1\ComplaintAPIController::class);

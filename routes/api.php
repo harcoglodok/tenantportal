@@ -36,3 +36,6 @@ Route::resource('messages', App\Http\Controllers\API\v1\MessageAPIController::cl
 
 
 Route::resource('notification_categories', App\Http\Controllers\API\v1\NotificationCategoryAPIController::class);
+
+
+Route::resource('notifications', App\Http\Controllers\API\v1\NotificationAPIController::class);

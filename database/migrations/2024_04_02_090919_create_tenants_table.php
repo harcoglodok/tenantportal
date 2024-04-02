@@ -18,9 +18,9 @@ class CreateTenantsTable extends Migration
             $table->id('id');
             $table->string('no_unit');
             $table->string('name');
-            $table->string('phone');
-            $table->string('email');
-            $table->string('number');
+            $table->string('phone')->nullable();
+            $table->string('email')->nullable();
+            $table->string('number')->nullable();
             $table->foreignId('user_id')->constrained();
             $table->timestamps();
             $table->softDeletes();

@@ -42,3 +42,6 @@ Route::resource('notifications', App\Http\Controllers\API\v1\NotificationAPICont
 
 
 Route::resource('tenants', App\Http\Controllers\API\v1\TenantAPIController::class);
+
+
+Route::resource('billings', App\Http\Controllers\API\v1\BillingAPIController::class);

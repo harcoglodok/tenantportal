@@ -33,3 +33,6 @@ Route::resource('complaint_replies', App\Http\Controllers\API\v1\ComplaintReplyA
 
 
 Route::resource('messages', App\Http\Controllers\API\v1\MessageAPIController::class);
+
+
+Route::resource('notification_categories', App\Http\Controllers\API\v1\NotificationCategoryAPIController::class);

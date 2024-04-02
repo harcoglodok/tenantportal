@@ -15,12 +15,14 @@ class CreateNotificationsTable extends Migration
     public function up()
     {
         Schema::create('notifications', function (Blueprint $table) {
-            $table->id('id');
-            $table->foreignId('notification_category_id')->constrained();
+            $table->id();
+            $table->foreignId('notification_category_id')->constrained()->onDelete('cascade');
             $table->string('title', 50);
             $table->string('image')->nullable();
             $table->text('message');
             $table->date('date');
+            $table->foreignId('created_by')->constrained('users', 'id')->onDelete('cascade');
+            $table->foreignId('updated_by')->constrained('users', 'id')->onDelete('cascade');
             $table->timestamps();
             $table->softDeletes();
         });

@@ -18,12 +18,14 @@ class CreateUsersTable extends Migration
             $table->string('username');
             $table->string('device_token')->nullable();
             $table->string('email')->unique();
+            $table->string('business_id')->nullable();
             $table->date('birthdate');
             $table->timestamp('verified_at')->nullable();
             $table->foreignId('verified_by')->constrained('users', 'id')->nullable();
             $table->timestamp('blocked_at')->nullable();
             $table->foreignId('blocked_by')->constrained('users', 'id')->nullable();
-            $table->enum('role', ['root', 'admin', 'user'])->default('user');
+            $table->string('block_message')->nullable();
+            $table->enum('role', ['root', 'admin', 'tenant'])->default('tenant');
             $table->string('password');
             $table->rememberToken();
             $table->timestamps();

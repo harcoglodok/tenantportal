@@ -45,3 +45,9 @@ Route::resource('tenants', App\Http\Controllers\API\v1\TenantAPIController::clas
 
 
 Route::resource('billings', App\Http\Controllers\API\v1\BillingAPIController::class);
+
+
+Route::resource('billing_transactions', App\Http\Controllers\API\v1\BillingTransactionAPIController::class);
+
+
+Route::resource('billing_import_logs', App\Http\Controllers\API\v1\BillingImportLogAPIController::class);

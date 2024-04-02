@@ -4,9 +4,8 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateNotificationCategoriesTable extends Migration
+class CreateTenantMessageTable extends Migration
 {
-
     /**
      * Run the migrations.
      *
@@ -14,11 +13,11 @@ class CreateNotificationCategoriesTable extends Migration
      */
     public function up()
     {
-        Schema::create('notification_categories', function (Blueprint $table) {
+        Schema::create('tenant_message', function (Blueprint $table) {
             $table->id();
-            $table->string('name');
+            $table->foreignId('tenant_id')->constrained();
+            $table->foreignId('message_id')->constrained();
             $table->timestamps();
-            $table->softDeletes();
         });
     }
 
@@ -29,6 +28,6 @@ class CreateNotificationCategoriesTable extends Migration
      */
     public function down()
     {
-        Schema::drop('notification_categories');
+        Schema::dropIfExists('tenant_message');
     }
 }

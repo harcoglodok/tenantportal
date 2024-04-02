@@ -19,11 +19,11 @@ class CreateComplaintsTable extends Migration
             $table->text('content');
             $table->string('photo', 50);
             $table->enum('status', ['waiting','replied','done']);
-            $table->string('created_by', 50);
-            $table->string('updated_by', 50);
+            $table->foreignId('created_by')->constrained('users', 'id')->onDelete('cascade');
+            $table->foreignId('updated_by')->constrained('users', 'id')->onDelete('cascade');
+            $table->foreignId('category_id')->constrained('complaint_categories', 'id')->onDelete('cascade');
             $table->timestamps();
             $table->softDeletes();
-            $table->foreignId('category_id')->constrained('complaint_categories', 'id');
         });
     }
 

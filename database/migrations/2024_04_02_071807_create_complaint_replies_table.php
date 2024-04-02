@@ -15,10 +15,10 @@ class CreateComplaintRepliesTable extends Migration
     public function up()
     {
         Schema::create('complaint_replies', function (Blueprint $table) {
-            $table->id('id');
-            $table->foreignId('complaint_id')->constrained();
+            $table->id();
+            $table->foreignId('complaint_id')->constrained()->onDelete('cascade');
             $table->text('reply');
-            $table->foreignId('user_id')->constrained();
+            $table->foreignId('user_id')->constrained()->onDelete('cascade');
             $table->timestamps();
             $table->softDeletes();
         });

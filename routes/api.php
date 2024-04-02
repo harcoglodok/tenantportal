@@ -30,3 +30,6 @@ Route::resource('complaints', App\Http\Controllers\API\v1\ComplaintAPIController
 
 
 Route::resource('complaint_replies', App\Http\Controllers\API\v1\ComplaintReplyAPIController::class);
+
+
+Route::resource('messages', App\Http\Controllers\API\v1\MessageAPIController::class);

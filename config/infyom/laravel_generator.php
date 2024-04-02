@@ -29,7 +29,7 @@ return [
 
         'controller'        => app_path('Http/Controllers/'),
 
-        'api_controller'    => app_path('Http/Controllers/API/'),
+        'api_controller'    => app_path('Http/Controllers/API/v1/'),
 
         'api_resource'      => app_path('Http/Resources/'),
 
@@ -71,7 +71,7 @@ return [
 
         'controller'        => 'App\Http\Controllers',
 
-        'api_controller'    => 'App\Http\Controllers\API',
+        'api_controller'    => 'App\Http\Controllers\API\v1',
 
         'api_resource'      => 'App\Http\Resources',
 
@@ -106,7 +106,7 @@ return [
     |
     */
 
-    'model_extend_class' => 'Eloquent',
+    'model_extend_class' => 'Illuminate\Database\Eloquent\Model',
 
     /*
     |--------------------------------------------------------------------------
@@ -138,7 +138,7 @@ return [
 
         'repository_pattern' => true,
 
-        'resources' => false,
+        'resources' => true,
 
         'excluded_fields' => ['id'], // Array of columns that doesn't required while creating module
     ],
@@ -172,7 +172,7 @@ return [
 
         'swagger'       => false,
 
-        'tests'         => true,
+        'tests'         => false,
 
         'datatables'    => false,
 

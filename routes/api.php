@@ -21,3 +21,6 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 
 
 Route::resource('banners', BannerAPIController::class);
+
+
+Route::resource('complaint_categories', App\Http\Controllers\API\v1\ComplaintCategoryAPIController::class);

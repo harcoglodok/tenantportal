@@ -37,6 +37,7 @@ class ComplaintCategoryResource extends Resource
     {
         return $table
             ->columns([
+                Tables\Columns\TextColumn::make('no')->rowIndex(),
                 Tables\Columns\TextColumn::make('title')
                     ->searchable(),
                 Tables\Columns\TextColumn::make('created_at')
@@ -58,6 +59,7 @@ class ComplaintCategoryResource extends Resource
             ->actions([
                 Tables\Actions\ViewAction::make(),
                 Tables\Actions\EditAction::make(),
+                Tables\Actions\DeleteAction::make(),
             ])
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([
@@ -77,9 +79,9 @@ class ComplaintCategoryResource extends Resource
     {
         return [
             'index' => Pages\ListComplaintCategories::route('/'),
-            'create' => Pages\CreateComplaintCategory::route('/create'),
-            'view' => Pages\ViewComplaintCategory::route('/{record}'),
-            'edit' => Pages\EditComplaintCategory::route('/{record}/edit'),
+            // 'create' => Pages\CreateComplaintCategory::route('/create'),
+            // 'view' => Pages\ViewComplaintCategory::route('/{record}'),
+            // 'edit' => Pages\EditComplaintCategory::route('/{record}/edit'),
         ];
     }
 }

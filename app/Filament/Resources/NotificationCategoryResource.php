@@ -37,6 +37,7 @@ class NotificationCategoryResource extends Resource
     {
         return $table
             ->columns([
+                Tables\Columns\TextColumn::make('no')->rowIndex(),
                 Tables\Columns\TextColumn::make('name')
                     ->searchable(),
                 Tables\Columns\TextColumn::make('created_at')
@@ -58,6 +59,7 @@ class NotificationCategoryResource extends Resource
             ->actions([
                 Tables\Actions\ViewAction::make(),
                 Tables\Actions\EditAction::make(),
+                Tables\Actions\DeleteAction::make(),
             ])
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([
@@ -77,9 +79,9 @@ class NotificationCategoryResource extends Resource
     {
         return [
             'index' => Pages\ListNotificationCategories::route('/'),
-            'create' => Pages\CreateNotificationCategory::route('/create'),
-            'view' => Pages\ViewNotificationCategory::route('/{record}'),
-            'edit' => Pages\EditNotificationCategory::route('/{record}/edit'),
+            // 'create' => Pages\CreateNotificationCategory::route('/create'),
+            // 'view' => Pages\ViewNotificationCategory::route('/{record}'),
+            // 'edit' => Pages\EditNotificationCategory::route('/{record}/edit'),
         ];
     }
 }

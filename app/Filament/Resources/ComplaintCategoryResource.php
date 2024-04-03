@@ -17,7 +17,11 @@ class ComplaintCategoryResource extends Resource
 {
     protected static ?string $model = ComplaintCategory::class;
 
-    protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
+    protected static ?string $navigationIcon = 'heroicon-o-queue-list';
+
+    protected static ?string $navigationGroup = 'Master';
+
+    protected static ?int $navigationSort = 6;
 
     public static function form(Form $form): Form
     {

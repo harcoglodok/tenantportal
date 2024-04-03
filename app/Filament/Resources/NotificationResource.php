@@ -2,9 +2,9 @@
 
 namespace App\Filament\Resources;
 
-use App\Filament\Resources\ComplaintResource\Pages;
-use App\Filament\Resources\ComplaintResource\RelationManagers;
-use App\Models\Complaint;
+use App\Filament\Resources\NotificationResource\Pages;
+use App\Filament\Resources\NotificationResource\RelationManagers;
+use App\Models\Notification;
 use Filament\Forms;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
@@ -13,38 +13,37 @@ use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
 
-class ComplaintResource extends Resource
+class NotificationResource extends Resource
 {
-    protected static ?string $model = Complaint::class;
+    protected static ?string $model = Notification::class;
 
-    protected static ?string $navigationIcon = 'heroicon-o-chat-bubble-left-right';
+    protected static ?string $navigationIcon = 'heroicon-o-bell-alert';
 
     protected static ?string $navigationGroup = 'User Management';
 
-    protected static ?int $navigationSort = 3;
+    protected static ?int $navigationSort = 5;
 
     public static function form(Form $form): Form
     {
         return $form
             ->schema([
+                Forms\Components\TextInput::make('notification_category_id')
+                    ->required()
+                    ->numeric(),
                 Forms\Components\TextInput::make('title')
                     ->required()
-                    ->maxLength(255),
-                Forms\Components\Textarea::make('content')
+                    ->maxLength(50),
+                Forms\Components\FileUpload::make('image')
+                    ->image(),
+                Forms\Components\Textarea::make('message')
                     ->required()
                     ->columnSpanFull(),
-                Forms\Components\TextInput::make('photo')
-                    ->required()
-                    ->maxLength(50),
-                Forms\Components\TextInput::make('status')
+                Forms\Components\DatePicker::make('date')
                     ->required(),
                 Forms\Components\TextInput::make('created_by')
                     ->required()
                     ->numeric(),
                 Forms\Components\TextInput::make('updated_by')
-                    ->required()
-                    ->numeric(),
-                Forms\Components\TextInput::make('category_id')
                     ->required()
                     ->numeric(),
             ]);
@@ -54,18 +53,19 @@ class ComplaintResource extends Resource
     {
         return $table
             ->columns([
+                Tables\Columns\TextColumn::make('notification_category_id')
+                    ->numeric()
+                    ->sortable(),
                 Tables\Columns\TextColumn::make('title')
                     ->searchable(),
-                Tables\Columns\TextColumn::make('photo')
-                    ->searchable(),
-                Tables\Columns\TextColumn::make('status'),
+                Tables\Columns\ImageColumn::make('image'),
+                Tables\Columns\TextColumn::make('date')
+                    ->date()
+                    ->sortable(),
                 Tables\Columns\TextColumn::make('created_by')
                     ->numeric()
                     ->sortable(),
                 Tables\Columns\TextColumn::make('updated_by')
-                    ->numeric()
-                    ->sortable(),
-                Tables\Columns\TextColumn::make('category_id')
                     ->numeric()
                     ->sortable(),
                 Tables\Columns\TextColumn::make('created_at')
@@ -105,10 +105,10 @@ class ComplaintResource extends Resource
     public static function getPages(): array
     {
         return [
-            'index' => Pages\ListComplaints::route('/'),
-            'create' => Pages\CreateComplaint::route('/create'),
-            'view' => Pages\ViewComplaint::route('/{record}'),
-            'edit' => Pages\EditComplaint::route('/{record}/edit'),
+            'index' => Pages\ListNotifications::route('/'),
+            'create' => Pages\CreateNotification::route('/create'),
+            'view' => Pages\ViewNotification::route('/{record}'),
+            'edit' => Pages\EditNotification::route('/{record}/edit'),
         ];
     }
 }

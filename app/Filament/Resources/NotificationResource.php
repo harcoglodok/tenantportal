@@ -27,25 +27,27 @@ class NotificationResource extends Resource
     {
         return $form
             ->schema([
-                Forms\Components\TextInput::make('notification_category_id')
-                    ->required()
-                    ->numeric(),
-                Forms\Components\TextInput::make('title')
-                    ->required()
-                    ->maxLength(50),
-                Forms\Components\FileUpload::make('image')
-                    ->image(),
-                Forms\Components\Textarea::make('message')
-                    ->required()
-                    ->columnSpanFull(),
-                Forms\Components\DatePicker::make('date')
-                    ->required(),
-                Forms\Components\TextInput::make('created_by')
-                    ->required()
-                    ->numeric(),
-                Forms\Components\TextInput::make('updated_by')
-                    ->required()
-                    ->numeric(),
+                Forms\Components\Section::make()->schema([
+                    Forms\Components\Select::make('notification_category_id')
+                        ->relationship(name: 'category', titleAttribute: 'name')
+                        ->columnSpan(1)
+                        ->required(),
+                    Forms\Components\DatePicker::make('date')
+                        ->columnSpan(1)
+                        ->native(false)
+                        ->minDate(now())
+                        ->required(),
+                    Forms\Components\TextInput::make('title')
+                        ->required()
+                        ->columnSpan(2)
+                        ->maxLength(50),
+                    Forms\Components\FileUpload::make('image')
+                        ->columnSpan(1)
+                        ->image(),
+                    Forms\Components\RichEditor::make('message')
+                        ->columnSpan(1)
+                        ->required(),
+                ]),
             ]);
     }
 
@@ -53,6 +55,7 @@ class NotificationResource extends Resource
     {
         return $table
             ->columns([
+                Tables\Columns\TextColumn::make('no')->rowIndex(),
                 Tables\Columns\TextColumn::make('notification_category_id')
                     ->numeric()
                     ->sortable(),

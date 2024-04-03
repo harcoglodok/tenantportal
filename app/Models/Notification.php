@@ -2,8 +2,9 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Model as Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use Illuminate\Database\Eloquent\Model as Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 
 /**
@@ -23,10 +24,9 @@ class Notification extends Model
 
 
     public $table = 'notifications';
-    
+
 
     protected $dates = ['deleted_at'];
-
 
 
     public $fillable = [
@@ -34,7 +34,9 @@ class Notification extends Model
         'title',
         'image',
         'message',
-        'date'
+        'date',
+        'created_by',
+        'updated_by'
     ];
 
     /**
@@ -46,7 +48,9 @@ class Notification extends Model
         'title' => 'string',
         'image' => 'string',
         'message' => 'string',
-        'date' => 'date'
+        'date' => 'date',
+        'created_by' => 'string',
+        'updated_by' => 'string'
     ];
 
     /**
@@ -58,8 +62,38 @@ class Notification extends Model
         'notification_category_id' => 'required',
         'title' => 'required',
         'message' => 'required',
-        'date' => 'required'
+        'date' => 'required',
+        'created_by' => 'required',
+        'updated_by' => 'required'
     ];
 
-    
+    /**
+     * Get the createdBy that owns the Message
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     */
+    public function createdBy(): BelongsTo
+    {
+        return $this->belongsTo(User::class, 'created_by', 'id');
+    }
+
+    /**
+     * Get the updatedBy that owns the Message
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     */
+    public function updatedBy(): BelongsTo
+    {
+        return $this->belongsTo(User::class, 'updated_by', 'id');
+    }
+
+    /**
+     * Get the category that owns the Notification
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     */
+    public function category(): BelongsTo
+    {
+        return $this->belongsTo(NotificationCategory::class, 'notification_category_id', 'id');
+    }
 }

@@ -27,14 +27,14 @@ class MessageResource extends Resource
                     ->required()
                     ->maxLength(50)
                     ->columnSpanFull(),
-                Forms\Components\Select::make('tenants')
-                    ->searchable()
-                    ->multiple()
-                    ->relationship(titleAttribute: 'name'),
                 Forms\Components\RichEditor::make('content')
                     ->required(),
                 Forms\Components\FileUpload::make('photo')
                     ->directory('messages'),
+                Forms\Components\Select::make('tenants')
+                    ->searchable()
+                    ->multiple()
+                    ->relationship(titleAttribute: 'name'),
             ]);
     }
 

@@ -37,9 +37,9 @@ class TenantResource extends Resource
                     ->maxLength(255),
                 Forms\Components\TextInput::make('number')
                     ->maxLength(255),
-                Forms\Components\TextInput::make('user_id')
-                    ->required()
-                    ->numeric(),
+                Forms\Components\Select::make('user_id')
+                    ->relationship(name: 'user', titleAttribute: 'name')
+                    ->required(),
             ]);
     }
 

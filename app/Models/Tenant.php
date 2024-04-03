@@ -2,8 +2,9 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Model as Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use Illuminate\Database\Eloquent\Model as Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 
 /**
@@ -23,7 +24,7 @@ class Tenant extends Model
 
 
     public $table = 'tenants';
-    
+
 
     protected $dates = ['deleted_at'];
 
@@ -34,7 +35,8 @@ class Tenant extends Model
         'name',
         'phone',
         'email',
-        'number'
+        'number',
+        'user_id'
     ];
 
     /**
@@ -63,5 +65,13 @@ class Tenant extends Model
         'number' => 'required'
     ];
 
-    
+    /**
+     * Get the user that owns the Tenant
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     */
+    public function user(): BelongsTo
+    {
+        return $this->belongsTo(User::class);
+    }
 }

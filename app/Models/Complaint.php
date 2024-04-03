@@ -31,6 +31,7 @@ class Complaint extends Model
 
     public $fillable = [
         'category_id',
+        'title',
         'content',
         'photo',
         'status',

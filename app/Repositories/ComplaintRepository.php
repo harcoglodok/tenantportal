@@ -17,6 +17,7 @@ class ComplaintRepository extends BaseRepository
      * @var array
      */
     protected $fieldSearchable = [
+        'title',
         'content',
         'photo',
         'status',

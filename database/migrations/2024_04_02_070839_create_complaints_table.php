@@ -16,6 +16,7 @@ class CreateComplaintsTable extends Migration
     {
         Schema::create('complaints', function (Blueprint $table) {
             $table->id();
+            $table->string('title');
             $table->text('content');
             $table->string('photo', 50);
             $table->enum('status', ['waiting','replied','done']);

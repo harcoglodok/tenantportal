@@ -2,9 +2,9 @@
 
 namespace App\Filament\Resources;
 
-use App\Filament\Resources\BannerResource\Pages;
-use App\Filament\Resources\BannerResource\RelationManagers;
-use App\Models\Banner;
+use App\Filament\Resources\MessageResource\Pages;
+use App\Filament\Resources\MessageResource\RelationManagers;
+use App\Models\Message;
 use Filament\Forms;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
@@ -13,9 +13,9 @@ use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
 
-class BannerResource extends Resource
+class MessageResource extends Resource
 {
-    protected static ?string $model = Banner::class;
+    protected static ?string $model = Message::class;
 
     protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
 
@@ -23,18 +23,18 @@ class BannerResource extends Resource
     {
         return $form
             ->schema([
-                Forms\Components\TextArea::make('title')
+                Forms\Components\TextInput::make('title')
                     ->required()
-                    ->rows(3)
-                    ->maxLength(50),
-                Forms\Components\FileUpload::make('banner')
-                    ->required()
-                    ->directory('banners')
-                    ->columns(6),
-                Forms\Components\Toggle::make('status')
-                    ->label('Is Active')
-                    ->default(true)
+                    ->maxLength(50)
+                    ->columnSpanFull(),
+                Forms\Components\Select::make('tenants')
+                    ->searchable()
+                    ->multiple()
+                    ->relationship(titleAttribute: 'name'),
+                Forms\Components\RichEditor::make('content')
                     ->required(),
+                Forms\Components\FileUpload::make('photo')
+                    ->directory('messages'),
             ]);
     }
 
@@ -46,22 +46,14 @@ class BannerResource extends Resource
                 Tables\Columns\TextColumn::make('title')
                     ->sortable()
                     ->searchable(),
-                Tables\Columns\ImageColumn::make('banner')
+                Tables\Columns\ImageColumn::make('photo')
                     ->width(200)
                     ->height(150),
-                Tables\Columns\IconColumn::make('status')
-                    ->boolean(),
-                Tables\Columns\TextColumn::make('created_at')
-                    ->dateTime()
-                    ->sortable()
-                    ->toggleable(isToggledHiddenByDefault: true),
-                Tables\Columns\TextColumn::make('updated_at')
-                    ->dateTime()
-                    ->sortable()
-                    ->toggleable(isToggledHiddenByDefault: true),
-                Tables\Columns\TextColumn::make('deleted_at')
-                    ->dateTime()
-                    ->sortable()
+                Tables\Columns\TextColumn::make('createdBy.name')
+                    ->numeric()
+                    ->toggleable(isToggledHiddenByDefault: false),
+                Tables\Columns\TextColumn::make('updatedBy.name')
+                    ->numeric()
                     ->toggleable(isToggledHiddenByDefault: true),
             ])
             ->filters([
@@ -69,7 +61,11 @@ class BannerResource extends Resource
             ])
             ->actions([
                 Tables\Actions\ViewAction::make(),
-                Tables\Actions\EditAction::make(),
+                Tables\Actions\EditAction::make()
+                    ->mutateFormDataUsing(function (array $data): array {
+                        $data['updated_by'] = auth()->id();
+                        return $data;
+                    }),
                 Tables\Actions\DeleteAction::make(),
             ])
             ->bulkActions([
@@ -91,9 +87,10 @@ class BannerResource extends Resource
     public static function getPages(): array
     {
         return [
-            'index' => Pages\ListBanners::route('/'),
-            // 'create' => Pages\CreateBanner::route('/create'),
-            // 'edit' => Pages\EditBanner::route('/{record}/edit'),
+            'index' => Pages\ListMessages::route('/'),
+            // 'create' => Pages\CreateMessage::route('/create'),
+            // 'view' => Pages\ViewMessage::route('/{record}'),
+            // 'edit' => Pages\EditMessage::route('/{record}/edit'),
         ];
     }
 

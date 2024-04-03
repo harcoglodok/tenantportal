@@ -18,6 +18,8 @@ class MessageRepository extends BaseRepository
      */
     protected $fieldSearchable = [
         'title',
+        'photo',
+        'content',
         'created_by',
         'updated_by'
     ];

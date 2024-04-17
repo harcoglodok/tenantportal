@@ -2,10 +2,10 @@
 
 namespace App\Http\Requests\API;
 
-use App\Models\Tenant;
+use App\Models\Unit;
 use InfyOm\Generator\Request\APIRequest;
 
-class CreateTenantAPIRequest extends APIRequest
+class UpdateUnitAPIRequest extends APIRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -24,6 +24,8 @@ class CreateTenantAPIRequest extends APIRequest
      */
     public function rules()
     {
-        return Tenant::$rules;
+        $rules = Unit::$rules;
+
+        return $rules;
     }
 }

@@ -3,7 +3,6 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model as Model;
-use Illuminate\Database\Eloquent\SoftDeletes;
 
 
 /**
@@ -16,8 +15,6 @@ use Illuminate\Database\Eloquent\SoftDeletes;
  */
 class BillingImportLogData extends Model
 {
-    use SoftDeletes;
-
 
     public $table = 'billing_import_log_data';
 

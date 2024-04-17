@@ -2,16 +2,16 @@
 
 namespace App\Repositories;
 
-use App\Models\Tenant;
+use App\Models\Unit;
 use App\Repositories\BaseRepository;
 
 /**
- * Class TenantRepository
+ * Class UnitRepository
  * @package App\Repositories
  * @version April 2, 2024, 9:09 am UTC
 */
 
-class TenantRepository extends BaseRepository
+class UnitRepository extends BaseRepository
 {
     /**
      * @var array
@@ -39,6 +39,6 @@ class TenantRepository extends BaseRepository
      **/
     public function model()
     {
-        return Tenant::class;
+        return Unit::class;
     }
 }

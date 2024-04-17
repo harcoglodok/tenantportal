@@ -5,7 +5,7 @@ namespace App\Filament\Resources\BillingResource\Pages;
 use App\Filament\Resources\BillingResource;
 use App\Imports\BillingsImport;
 use App\Models\BillingImportLog;
-use Filament\Actions;
+use App\Models\BillingImportLogData;
 use Filament\Actions\Action;
 use Filament\Forms\Components\FileUpload;
 use Filament\Notifications\Notification;
@@ -30,23 +30,33 @@ class ListBillings extends ListRecords
                         ->label('Import File Excel'),
                 ])
                 ->action(function (array $data) {
-                    // $data is an array which consists of all the form data
-                    $file = public_path("storage/billings/" . $data['import']);
+                    $file = public_path("storage/" . $data['import']);
 
-                    BillingImportLog::create([
+                    $log = BillingImportLog::create([
                         'user_id' => auth()->user()->id,
-                        'file' => 'billings/'.$data['import']
+                        'file' => $data['import']
                     ]);
 
                     Excel::import(new BillingsImport, $file);
 
+                    $successData = BillingImportLogData::where('billing_import_log_id', $log->id)
+                        ->where('status', 'success')
+                        ->count();
+                    $failedData = BillingImportLogData::where('billing_import_log_id', $log->id)
+                        ->where('status', 'failed')
+                        ->count();
+
                     Notification::make()
                         ->success()
                         ->title('Billings Imported')
-                        ->body('Billings data imported successfully.'.$file)
+                        ->body('Successfully import ' . $successData . ' Invoice' . ($failedData ? (' & Failed to Import ' . $failedData . ' Invoice') : ''))
                         ->send();
                 }),
-            // Actions\CreateAction::make(),
+            Action::make('importLogs')
+                ->label('Import Logs')
+                ->color('info')
+                ->icon('heroicon-m-information-circle')
+                ->url(route('filament.admin.resources.billing-import-logs.index')),
         ];
     }
 }

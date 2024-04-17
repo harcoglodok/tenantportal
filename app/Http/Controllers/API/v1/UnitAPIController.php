@@ -2,32 +2,32 @@
 
 namespace App\Http\Controllers\API\v1;
 
-use App\Http\Requests\API\CreateTenantAPIRequest;
-use App\Http\Requests\API\UpdateTenantAPIRequest;
-use App\Models\Tenant;
-use App\Repositories\TenantRepository;
+use App\Http\Requests\API\CreateUnitAPIRequest;
+use App\Http\Requests\API\UpdateUnitAPIRequest;
+use App\Models\Unit;
+use App\Repositories\UnitRepository;
 use Illuminate\Http\Request;
 use App\Http\Controllers\AppBaseController;
-use App\Http\Resources\TenantResource;
+use App\Http\Resources\UnitResource;
 use Response;
 
 /**
- * Class TenantController
+ * Class UnitController
  * @package App\Http\Controllers\API\v1
  */
 
-class TenantAPIController extends AppBaseController
+class UnitAPIController extends AppBaseController
 {
-    /** @var  TenantRepository */
+    /** @var  UnitRepository */
     private $tenantRepository;
 
-    public function __construct(TenantRepository $tenantRepo)
+    public function __construct(UnitRepository $tenantRepo)
     {
         $this->tenantRepository = $tenantRepo;
     }
 
     /**
-     * Display a listing of the Tenant.
+     * Display a listing of the Unit.
      * GET|HEAD /tenants
      *
      * @param Request $request
@@ -41,28 +41,28 @@ class TenantAPIController extends AppBaseController
             $request->get('limit')
         );
 
-        return $this->sendResponse(TenantResource::collection($tenants), 'Tenants retrieved successfully');
+        return $this->sendResponse(UnitResource::collection($tenants), 'Units retrieved successfully');
     }
 
     /**
-     * Store a newly created Tenant in storage.
+     * Store a newly created Unit in storage.
      * POST /tenants
      *
-     * @param CreateTenantAPIRequest $request
+     * @param CreateUnitAPIRequest $request
      *
      * @return Response
      */
-    public function store(CreateTenantAPIRequest $request)
+    public function store(CreateUnitAPIRequest $request)
     {
         $input = $request->all();
 
         $tenant = $this->tenantRepository->create($input);
 
-        return $this->sendResponse(new TenantResource($tenant), 'Tenant saved successfully');
+        return $this->sendResponse(new UnitResource($tenant), 'Unit saved successfully');
     }
 
     /**
-     * Display the specified Tenant.
+     * Display the specified Unit.
      * GET|HEAD /tenants/{id}
      *
      * @param int $id
@@ -71,43 +71,43 @@ class TenantAPIController extends AppBaseController
      */
     public function show($id)
     {
-        /** @var Tenant $tenant */
+        /** @var Unit $tenant */
         $tenant = $this->tenantRepository->find($id);
 
         if (empty($tenant)) {
-            return $this->sendError('Tenant not found');
+            return $this->sendError('Unit not found');
         }
 
-        return $this->sendResponse(new TenantResource($tenant), 'Tenant retrieved successfully');
+        return $this->sendResponse(new UnitResource($tenant), 'Unit retrieved successfully');
     }
 
     /**
-     * Update the specified Tenant in storage.
+     * Update the specified Unit in storage.
      * PUT/PATCH /tenants/{id}
      *
      * @param int $id
-     * @param UpdateTenantAPIRequest $request
+     * @param UpdateUnitAPIRequest $request
      *
      * @return Response
      */
-    public function update($id, UpdateTenantAPIRequest $request)
+    public function update($id, UpdateUnitAPIRequest $request)
     {
         $input = $request->all();
 
-        /** @var Tenant $tenant */
+        /** @var Unit $tenant */
         $tenant = $this->tenantRepository->find($id);
 
         if (empty($tenant)) {
-            return $this->sendError('Tenant not found');
+            return $this->sendError('Unit not found');
         }
 
         $tenant = $this->tenantRepository->update($input, $id);
 
-        return $this->sendResponse(new TenantResource($tenant), 'Tenant updated successfully');
+        return $this->sendResponse(new UnitResource($tenant), 'Unit updated successfully');
     }
 
     /**
-     * Remove the specified Tenant from storage.
+     * Remove the specified Unit from storage.
      * DELETE /tenants/{id}
      *
      * @param int $id
@@ -118,15 +118,15 @@ class TenantAPIController extends AppBaseController
      */
     public function destroy($id)
     {
-        /** @var Tenant $tenant */
+        /** @var Unit $tenant */
         $tenant = $this->tenantRepository->find($id);
 
         if (empty($tenant)) {
-            return $this->sendError('Tenant not found');
+            return $this->sendError('Unit not found');
         }
 
         $tenant->delete();
 
-        return $this->sendSuccess('Tenant deleted successfully');
+        return $this->sendSuccess('Unit deleted successfully');
     }
 }

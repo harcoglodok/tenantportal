@@ -92,7 +92,7 @@ class Billing extends Model
         'mandiri',
         'add_charge',
         'previous_transaction',
-        'status'
+        'status',
     ];
 
     /**

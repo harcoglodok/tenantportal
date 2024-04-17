@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model as Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
 
@@ -27,6 +28,11 @@ class BillingImportLog extends Model
         'file'
     ];
 
+    protected $appends = [
+        'successCount',
+        'failedCount',
+    ];
+
     /**
      * The attributes that should be casted to native types.
      *
@@ -46,8 +52,38 @@ class BillingImportLog extends Model
         'file' => 'required'
     ];
 
+    /**
+     * Get the user that owns the BillingImportLog
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     */
+    public function user(): BelongsTo
+    {
+        return $this->belongsTo(User::class);
+    }
+
     public function billingImportLogData()
     {
         return $this->hasMany(BillingImportLogData::class, 'billing_import_log_id', 'id');
+    }
+
+    public function billingImportLogDataSuccess()
+    {
+        return $this->hasMany(BillingImportLogData::class, 'billing_import_log_id', 'id')->where('status', 'success');
+    }
+
+    public function billingImportLogDataFailed()
+    {
+        return $this->hasMany(BillingImportLogData::class, 'billing_import_log_id', 'id')->where('status', 'failed');
+    }
+
+    public function getSuccessCountAttribute()
+    {
+        return $this->billingImportLogDataSuccess()->count();
+    }
+
+    public function getFailedCountAttribute()
+    {
+        return $this->billingImportLogDataFailed()->count();
     }
 }

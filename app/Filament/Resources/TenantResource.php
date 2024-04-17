@@ -45,7 +45,9 @@ class TenantResource extends Resource
                         ->unique()
                         ->required()
                         ->maxLength(255),
-                    Forms\Components\DatePicker::make('birthdate'),
+                    Forms\Components\DatePicker::make('birthdate')
+                        ->native(false)
+                        ->maxDate(now()),
                     Forms\Components\TextInput::make('password')
                         ->password()
                         ->required()

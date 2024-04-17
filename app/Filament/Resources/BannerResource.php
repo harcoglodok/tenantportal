@@ -44,7 +44,7 @@ class BannerResource extends Resource
 
     public static function table(Table $table): Table
     {
-        $height = 200;
+        $height = 100;
         $width = $height * 16 / 9;
         return $table
             ->columns([

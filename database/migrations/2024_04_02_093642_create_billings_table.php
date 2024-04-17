@@ -19,7 +19,7 @@ class CreateBillingsTable extends Migration
             $table->string('inv_no');
             $table->string('month');
             $table->string('year');
-            $table->foreignId('tenant_id')->constrained()->onDelete('cascade');
+            $table->foreignId('unit_id')->constrained()->onDelete('cascade');
             $table->double('s4_mbase_amt')->default(0);
             $table->double('s4_mtax_amt')->default(0);
             $table->double('sd_mbase_amt')->default(0);

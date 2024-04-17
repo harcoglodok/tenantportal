@@ -90,6 +90,6 @@ class Message extends Model
      */
     public function tenants(): BelongsToMany
     {
-        return $this->belongsToMany(Tenant::class, 'tenant_message', 'message_id', 'tenant_id');
+        return $this->belongsToMany(User::class, 'user_message', 'message_id', 'user_id');
     }
 }

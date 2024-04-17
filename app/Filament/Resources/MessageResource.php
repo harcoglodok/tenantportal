@@ -5,6 +5,7 @@ namespace App\Filament\Resources;
 use App\Filament\Resources\MessageResource\Pages;
 use App\Filament\Resources\MessageResource\RelationManagers;
 use App\Models\Message;
+use App\Models\User;
 use Filament\Forms;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
@@ -34,16 +35,29 @@ class MessageResource extends Resource
                 Forms\Components\RichEditor::make('content')
                     ->required(),
                 Forms\Components\FileUpload::make('photo')
-                    ->directory('messages'),
+                    ->directory('messages')
+                    ->image()
+                    ->imageEditor()
+                    ->imageCropAspectRatio('16:9')
+                    ->imageEditorAspectRatios(['16:9']),
                 Forms\Components\Select::make('tenants')
                     ->searchable()
                     ->multiple()
-                    ->relationship(titleAttribute: 'name'),
+                    ->relationship(
+                        titleAttribute: 'name',
+                        modifyQueryUsing: fn (Builder $query) => $query
+                            ->where('role', 'tenant')
+                            ->whereNotNull('verified_at')
+                            ->whereNull('blocked_at'),
+                    )
+                    ->preload(),
             ]);
     }
 
     public static function table(Table $table): Table
     {
+        $height = 100;
+        $width = $height * 16 / 9;
         return $table
             ->columns([
                 Tables\Columns\TextColumn::make('no')->rowIndex(),
@@ -51,13 +65,11 @@ class MessageResource extends Resource
                     ->sortable()
                     ->searchable(),
                 Tables\Columns\ImageColumn::make('photo')
-                    ->width(200)
-                    ->height(150),
+                    ->width($width)
+                    ->height($height),
                 Tables\Columns\TextColumn::make('createdBy.name')
-                    ->numeric()
                     ->toggleable(isToggledHiddenByDefault: false),
                 Tables\Columns\TextColumn::make('updatedBy.name')
-                    ->numeric()
                     ->toggleable(isToggledHiddenByDefault: true),
             ])
             ->filters([

@@ -3,6 +3,7 @@
 namespace App\Filament\Resources;
 
 use App\Filament\Resources\TenantResource\Pages;
+use App\Filament\Resources\TenantResource\RelationManagers\UnitsRelationManager;
 use App\Models\User;
 use Carbon\Carbon;
 use Filament\Forms;
@@ -161,7 +162,7 @@ class TenantResource extends Resource
     public static function getRelations(): array
     {
         return [
-            //
+            UnitsRelationManager::class,
         ];
     }
 

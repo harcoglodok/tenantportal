@@ -8,7 +8,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 
 /**
- * Class Tenant
+ * Class Unit
  * @package App\Models
  * @version April 2, 2024, 9:09 am UTC
  *
@@ -18,7 +18,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
  * @property string $email
  * @property string $number
  */
-class Tenant extends Model
+class Unit extends Model
 {
     use SoftDeletes;
 

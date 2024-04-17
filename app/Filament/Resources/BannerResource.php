@@ -28,6 +28,12 @@ class BannerResource extends Resource
                     ->rows(3)
                     ->maxLength(50),
                 Forms\Components\FileUpload::make('banner')
+                    ->image()
+                    ->imageEditor()
+                    ->imageCropAspectRatio('16:9')
+                    ->imageEditorAspectRatios([
+                        '16:9',
+                    ])
                     ->required()
                     ->directory('banners')
                     ->columns(6),

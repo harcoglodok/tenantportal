@@ -13,9 +13,9 @@ class CreateTenantMessageTable extends Migration
      */
     public function up()
     {
-        Schema::create('tenant_message', function (Blueprint $table) {
+        Schema::create('user_message', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('tenant_id')->constrained();
+            $table->foreignId('user_id')->constrained();
             $table->foreignId('message_id')->constrained();
             $table->timestamps();
         });
@@ -28,6 +28,6 @@ class CreateTenantMessageTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('tenant_message');
+        Schema::dropIfExists('user_message');
     }
 }

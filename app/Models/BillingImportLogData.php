@@ -7,24 +7,29 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 
 
 /**
- * Class BillingImportLog
+ * Class BillingImportLogData
  * @package App\Models
- * @version April 2, 2024, 10:03 am UTC
+ * @version April 17, 2024, 10:03 am UTC
  *
- * @property foreignId $user_id
+ * @property foreignId $billing_import_log_id
  * @property string $file
  */
-class BillingImportLog extends Model
+class BillingImportLogData extends Model
 {
     use SoftDeletes;
 
-    public $table = 'billing_import_logs';
+
+    public $table = 'billing_import_log_data';
+
 
     protected $dates = ['deleted_at'];
 
+
+
     public $fillable = [
-        'user_id',
-        'file'
+        'billing_import_log_id',
+        'status',
+        'message',
     ];
 
     /**
@@ -33,7 +38,8 @@ class BillingImportLog extends Model
      * @var array
      */
     protected $casts = [
-        'file' => 'string'
+        'status' => 'string',
+        'message' => 'string'
     ];
 
     /**
@@ -42,12 +48,10 @@ class BillingImportLog extends Model
      * @var array
      */
     public static $rules = [
-        'user_id' => 'required',
-        'file' => 'required'
+        'billing_import_log_id' => 'required',
+        'status' => 'required',
+        'message' => 'required'
     ];
 
-    public function billingImportLogData()
-    {
-        return $this->hasMany(BillingImportLogData::class, 'billing_import_log_id', 'id');
-    }
+
 }

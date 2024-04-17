@@ -27,26 +27,32 @@ class ComplaintResource extends Resource
     {
         return $form
             ->schema([
-                Forms\Components\TextInput::make('title')
-                    ->required()
-                    ->maxLength(255),
-                Forms\Components\Textarea::make('content')
-                    ->required()
-                    ->columnSpanFull(),
-                Forms\Components\TextInput::make('photo')
-                    ->required()
-                    ->maxLength(50),
-                Forms\Components\TextInput::make('status')
-                    ->required(),
-                Forms\Components\TextInput::make('created_by')
-                    ->required()
-                    ->numeric(),
-                Forms\Components\TextInput::make('updated_by')
-                    ->required()
-                    ->numeric(),
-                Forms\Components\TextInput::make('category_id')
-                    ->required()
-                    ->numeric(),
+                Forms\Components\Section::make()->schema([
+                    Forms\Components\TextInput::make('title')
+                        ->required()
+                        ->maxLength(255),
+                    Forms\Components\Select::make('category_id')
+                        ->relationship(name: 'category', titleAttribute: 'title')
+                        ->required(),
+                    Forms\Components\Textarea::make('content')
+                        ->required()
+                        ->columnSpanFull(),
+                    Forms\Components\FileUpload::make('photo')
+                        ->directory('complaints')
+                        ->required()
+                        ->image()
+                        ->imageEditor()
+                        ->imageCropAspectRatio('1:1')
+                        ->imageEditorAspectRatios(['1:1']),
+                    Forms\Components\Select::make('status')
+                        ->options([
+                            'waiting' => 'Waiting',
+                            'replied' => 'Replied',
+                            'done' => 'Done',
+                        ])
+                        ->default('waiting')
+                        ->required(),
+                ])
             ]);
     }
 
@@ -54,19 +60,29 @@ class ComplaintResource extends Resource
     {
         return $table
             ->columns([
+                Tables\Columns\TextColumn::make('no')->rowIndex(),
+                Tables\Columns\TextColumn::make('category.title')
+                    ->sortable(),
                 Tables\Columns\TextColumn::make('title')
-                    ->searchable(),
-                Tables\Columns\TextColumn::make('photo')
-                    ->searchable(),
-                Tables\Columns\TextColumn::make('status'),
-                Tables\Columns\TextColumn::make('created_by')
-                    ->numeric()
+                    ->searchable()
                     ->sortable(),
-                Tables\Columns\TextColumn::make('updated_by')
-                    ->numeric()
+                Tables\Columns\ImageColumn::make('photo')
+                    ->height(100)
+                    ->square(),
+                Tables\Columns\TextColumn::make('status')
+                    ->badge()
+                    ->color(fn (string $state): string => match ($state) {
+                        'waiting' => 'warning',
+                        'replied' => 'info',
+                        'done' => 'success',
+                    }),
+                Tables\Columns\TextColumn::make('createdBy.name')
+                    ->toggleable(isToggledHiddenByDefault: false)
+                    ->placeholder('-')
                     ->sortable(),
-                Tables\Columns\TextColumn::make('category_id')
-                    ->numeric()
+                Tables\Columns\TextColumn::make('updatedBy.name')
+                    ->toggleable(isToggledHiddenByDefault: true)
+                    ->placeholder('-')
                     ->sortable(),
                 Tables\Columns\TextColumn::make('created_at')
                     ->dateTime()

@@ -43,7 +43,10 @@ class NotificationResource extends Resource
                         ->maxLength(50),
                     Forms\Components\FileUpload::make('image')
                         ->columnSpan(1)
-                        ->image(),
+                        ->image()
+                        ->imageEditor()
+                        ->imageCropAspectRatio('16:9')
+                        ->imageEditorAspectRatios(['16:9']),
                     Forms\Components\RichEditor::make('message')
                         ->columnSpan(1)
                         ->required(),
@@ -53,24 +56,29 @@ class NotificationResource extends Resource
 
     public static function table(Table $table): Table
     {
+        $height = 100;
+        $width = $height * 16 / 9;
         return $table
             ->columns([
                 Tables\Columns\TextColumn::make('no')->rowIndex(),
-                Tables\Columns\TextColumn::make('notification_category_id')
-                    ->numeric()
+                Tables\Columns\TextColumn::make('category.name')
+                    ->label('Category')
                     ->sortable(),
                 Tables\Columns\TextColumn::make('title')
+                    ->sortable()
                     ->searchable(),
-                Tables\Columns\ImageColumn::make('image'),
+                Tables\Columns\ImageColumn::make('image')
+                    ->width($width)
+                    ->height($height),
                 Tables\Columns\TextColumn::make('date')
                     ->date()
                     ->sortable(),
-                Tables\Columns\TextColumn::make('created_by')
-                    ->numeric()
-                    ->sortable(),
-                Tables\Columns\TextColumn::make('updated_by')
-                    ->numeric()
-                    ->sortable(),
+                Tables\Columns\TextColumn::make('createdBy.name')
+                    ->sortable()
+                    ->toggleable(isToggledHiddenByDefault: true),
+                Tables\Columns\TextColumn::make('updatedBy.name')
+                    ->sortable()
+                    ->toggleable(isToggledHiddenByDefault: true),
                 Tables\Columns\TextColumn::make('created_at')
                     ->dateTime()
                     ->sortable()

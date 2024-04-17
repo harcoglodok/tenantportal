@@ -4,9 +4,14 @@ namespace App\Filament\Resources;
 
 use App\Filament\Resources\ComplaintResource\Pages;
 use App\Filament\Resources\ComplaintResource\RelationManagers;
+use App\Filament\Resources\ComplaintResource\RelationManagers\ComplaintRepliesRelationManager;
 use App\Models\Complaint;
 use Filament\Forms;
 use Filament\Forms\Form;
+use Filament\Infolists\Components\ImageEntry;
+use Filament\Infolists\Components\Section;
+use Filament\Infolists\Components\TextEntry;
+use Filament\Infolists\Infolist;
 use Filament\Resources\Resource;
 use Filament\Tables;
 use Filament\Tables\Table;
@@ -111,10 +116,35 @@ class ComplaintResource extends Resource
             ]);
     }
 
+
+    public static function infolist(Infolist $infolist): Infolist
+    {
+        return $infolist
+            ->schema([
+                Section::make()->schema([
+                    TextEntry::make('category.title'),
+                    TextEntry::make('title'),
+                    TextEntry::make('status')
+                        ->badge()
+                        ->color(fn (string $state): string => match ($state) {
+                            'waiting' => 'warning',
+                            'replied' => 'info',
+                            'done' => 'success',
+                        }),
+                    TextEntry::make('createdBy.name'),
+                    TextEntry::make('updatedBy.name'),
+                    ImageEntry::make('photo')
+                        ->height(100)
+                        ->square(),
+                ])->columns(3),
+            ]);
+    }
+
+
     public static function getRelations(): array
     {
         return [
-            //
+            ComplaintRepliesRelationManager::class,
         ];
     }
 

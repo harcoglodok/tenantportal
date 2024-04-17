@@ -31,9 +31,7 @@ class BannerResource extends Resource
                     ->image()
                     ->imageEditor()
                     ->imageCropAspectRatio('16:9')
-                    ->imageEditorAspectRatios([
-                        '16:9',
-                    ])
+                    ->imageEditorAspectRatios(['16:9'])
                     ->required()
                     ->directory('banners')
                     ->columns(6),
@@ -46,6 +44,8 @@ class BannerResource extends Resource
 
     public static function table(Table $table): Table
     {
+        $height = 200;
+        $width = $height * 16 / 9;
         return $table
             ->columns([
                 Tables\Columns\TextColumn::make('no')->rowIndex(),
@@ -53,8 +53,8 @@ class BannerResource extends Resource
                     ->sortable()
                     ->searchable(),
                 Tables\Columns\ImageColumn::make('banner')
-                    ->width(200)
-                    ->height(150),
+                    ->width($width)
+                    ->height($height),
                 Tables\Columns\IconColumn::make('status')
                     ->boolean(),
                 Tables\Columns\TextColumn::make('created_at')

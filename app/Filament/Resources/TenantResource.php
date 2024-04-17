@@ -3,17 +3,27 @@
 namespace App\Filament\Resources;
 
 use App\Filament\Resources\TenantResource\Pages;
-use App\Filament\Resources\TenantResource\RelationManagers;
-use App\Models\Unit;
+use App\Models\User;
+use Carbon\Carbon;
 use Filament\Forms;
+use Filament\Forms\Components\TextInput;
 use Filament\Forms\Form;
+use Filament\Infolists\Components\Section;
+use Filament\Infolists\Components\TextEntry;
+use Filament\Infolists\Infolist;
+use Filament\Notifications\Notification;
 use Filament\Resources\Resource;
 use Filament\Tables;
+use Filament\Tables\Actions\Action;
+use Filament\Tables\Actions\ActionGroup;
 use Filament\Tables\Table;
+use Illuminate\Database\Eloquent\Builder;
 
 class TenantResource extends Resource
 {
-    protected static ?string $model = Unit::class;
+    protected static ?string $model = User::class;
+
+    protected static ?string $modelLabel = 'Tenant';
 
     protected static ?string $navigationIcon = 'heroicon-o-building-storefront';
 
@@ -25,67 +35,126 @@ class TenantResource extends Resource
     {
         return $form
             ->schema([
-                Forms\Components\TextInput::make('no_unit')
-                    ->required()
-                    ->maxLength(255),
-                Forms\Components\TextInput::make('name')
-                    ->required()
-                    ->maxLength(255),
-                Forms\Components\TextInput::make('phone')
-                    ->tel()
-                    ->maxLength(255),
-                Forms\Components\TextInput::make('email')
-                    ->email()
-                    ->maxLength(255),
-                Forms\Components\TextInput::make('number')
-                    ->maxLength(255),
-                Forms\Components\Select::make('user_id')
-                    ->relationship(name: 'user', titleAttribute: 'name')
-                    ->required(),
+                Forms\Components\Section::make()->schema([
+                    Forms\Components\TextInput::make('name')
+                        ->required()
+                        ->maxLength(255),
+                    Forms\Components\TextInput::make('email')
+                        ->email()
+                        ->unique()
+                        ->required()
+                        ->maxLength(255),
+                    Forms\Components\DatePicker::make('birthdate'),
+                    Forms\Components\TextInput::make('password')
+                        ->password()
+                        ->required()
+                        ->maxLength(255)
+                        ->hiddenOn(['view', 'edit']),
+                ])->columns(2)
             ]);
     }
 
     public static function table(Table $table): Table
     {
         return $table
+            ->modifyQueryUsing(function (Builder $query) {
+                $query->where('role', 'tenant');
+            })
             ->columns([
-                Tables\Columns\TextColumn::make('no_unit')
-                    ->searchable(),
+                Tables\Columns\TextColumn::make('no')->rowIndex(),
                 Tables\Columns\TextColumn::make('name')
-                    ->searchable(),
-                Tables\Columns\TextColumn::make('phone')
                     ->searchable(),
                 Tables\Columns\TextColumn::make('email')
                     ->searchable(),
-                Tables\Columns\TextColumn::make('number')
-                    ->searchable(),
-                Tables\Columns\TextColumn::make('user_id')
-                    ->numeric()
-                    ->sortable(),
-                Tables\Columns\TextColumn::make('created_at')
-                    ->dateTime()
-                    ->sortable()
-                    ->toggleable(isToggledHiddenByDefault: true),
-                Tables\Columns\TextColumn::make('updated_at')
-                    ->dateTime()
-                    ->sortable()
-                    ->toggleable(isToggledHiddenByDefault: true),
-                Tables\Columns\TextColumn::make('deleted_at')
-                    ->dateTime()
-                    ->sortable()
-                    ->toggleable(isToggledHiddenByDefault: true),
+                Tables\Columns\IconColumn::make('is_verified')
+                    ->boolean()
+                    ->label('Verified'),
+                Tables\Columns\IconColumn::make('is_blocked')
+                    ->boolean()
+                    ->label('Blocked'),
+                Tables\Columns\TextColumn::make('units_count')
+                    ->counts('units')
+                    ->label('Total Unit'),
             ])
             ->filters([
                 //
             ])
             ->actions([
-                Tables\Actions\ViewAction::make(),
-                Tables\Actions\EditAction::make(),
+                ActionGroup::make([
+                    Action::make('verifyUser')
+                        ->label('Verify User')
+                        ->color('success')
+                        ->icon('heroicon-m-check-badge')
+                        ->requiresConfirmation()
+                        ->action(function (User $record) {
+                            $record->update([
+                                'verified_at' => Carbon::now(),
+                                'verified_by' => auth()->user()->id,
+                            ]);
+                            Notification::make()
+                                ->success()
+                                ->title('Verify Successed')
+                                ->body('User verified successfully.')
+                                ->send();
+                        }),
+                    Action::make('blockUser')
+                        ->label('Block User')
+                        ->color('danger')
+                        ->icon('heroicon-m-no-symbol')
+                        ->requiresConfirmation()
+                        ->form([
+                            TextInput::make('message')
+                                ->required(),
+                        ])
+                        ->action(function (User $record, array $data) {
+                            $record->update([
+                                'blocked_at' => Carbon::now(),
+                                'blocked_by' => auth()->user()->id,
+                                'block_message' => $data['message'],
+                            ]);
+                            Notification::make()
+                                ->success()
+                                ->title('Verify Successed')
+                                ->body('User verified successfully.')
+                                ->send();
+                        }),
+                    Tables\Actions\ViewAction::make(),
+                    Tables\Actions\EditAction::make(),
+                ]),
             ])
             ->bulkActions([
-                Tables\Actions\BulkActionGroup::make([
-                    Tables\Actions\DeleteBulkAction::make(),
-                ]),
+                // Tables\Actions\BulkActionGroup::make([
+                //     Tables\Actions\DeleteBulkAction::make(),
+                // ]),
+            ]);
+    }
+
+    public static function infolist(Infolist $infolist): Infolist
+    {
+        return $infolist
+            ->schema([
+                Section::make()->schema([
+                    TextEntry::make('name'),
+                    TextEntry::make('email'),
+                    TextEntry::make('birthdate')
+                        ->placeholder('-')
+                        ->dateTime(),
+                    TextEntry::make('verified_at')
+                        ->dateTime()
+                        ->placeholder('-'),
+                    TextEntry::make('adminVerified.name')
+                        ->label('Verified By')
+                        ->placeholder('-'),
+                    TextEntry::make(''),
+                    TextEntry::make('blocked_at')
+                        ->placeholder('-')
+                        ->dateTime(),
+                    TextEntry::make('adminBlock.name')
+                        ->label('Blocked By')
+                        ->placeholder('-'),
+                    TextEntry::make('block_message')
+                        ->placeholder('-'),
+                ])->columns(3),
             ]);
     }
 

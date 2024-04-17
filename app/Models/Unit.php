@@ -23,7 +23,7 @@ class Unit extends Model
     use SoftDeletes;
 
 
-    public $table = 'tenants';
+    public $table = 'units';
 
 
     protected $dates = ['deleted_at'];

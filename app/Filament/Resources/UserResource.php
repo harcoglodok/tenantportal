@@ -11,11 +11,12 @@ use Filament\Resources\Resource;
 use Filament\Tables;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
-use Illuminate\Database\Eloquent\SoftDeletingScope;
 
 class UserResource extends Resource
 {
     protected static ?string $model = User::class;
+
+    protected static ?string $modelLabel = 'Admin';
 
     protected static ?string $navigationIcon = 'heroicon-o-user-group';
 
@@ -32,64 +33,29 @@ class UserResource extends Resource
                     ->maxLength(255),
                 Forms\Components\TextInput::make('email')
                     ->email()
+                    ->unique()
                     ->required()
                     ->maxLength(255),
-                Forms\Components\TextInput::make('business_id')
-                    ->maxLength(255),
-                Forms\Components\DatePicker::make('birthdate'),
-                Forms\Components\DateTimePicker::make('verified_at'),
-                Forms\Components\TextInput::make('verified_by')
-                    ->numeric(),
-                Forms\Components\DateTimePicker::make('blocked_at'),
-                Forms\Components\TextInput::make('blocked_by')
-                    ->numeric(),
-                Forms\Components\TextInput::make('block_message')
-                    ->maxLength(255),
-                Forms\Components\TextInput::make('role')
-                    ->required(),
                 Forms\Components\TextInput::make('password')
                     ->password()
                     ->required()
-                    ->maxLength(255),
+                    ->maxLength(255)
+                    ->hiddenOn(['view', 'edit']),
             ]);
     }
 
     public static function table(Table $table): Table
     {
         return $table
+            ->modifyQueryUsing(function (Builder $query) {
+                $query->where('role', 'admin');
+            })
             ->columns([
+                Tables\Columns\TextColumn::make('no')->rowIndex(),
                 Tables\Columns\TextColumn::make('name')
                     ->searchable(),
                 Tables\Columns\TextColumn::make('email')
                     ->searchable(),
-                Tables\Columns\TextColumn::make('business_id')
-                    ->searchable(),
-                Tables\Columns\TextColumn::make('birthdate')
-                    ->date()
-                    ->sortable(),
-                Tables\Columns\TextColumn::make('verified_at')
-                    ->dateTime()
-                    ->sortable(),
-                Tables\Columns\TextColumn::make('verified_by')
-                    ->numeric()
-                    ->sortable(),
-                Tables\Columns\TextColumn::make('blocked_at')
-                    ->dateTime()
-                    ->sortable(),
-                Tables\Columns\TextColumn::make('blocked_by')
-                    ->numeric()
-                    ->sortable(),
-                Tables\Columns\TextColumn::make('block_message')
-                    ->searchable(),
-                Tables\Columns\TextColumn::make('role'),
-                Tables\Columns\TextColumn::make('created_at')
-                    ->dateTime()
-                    ->sortable()
-                    ->toggleable(isToggledHiddenByDefault: true),
-                Tables\Columns\TextColumn::make('updated_at')
-                    ->dateTime()
-                    ->sortable()
-                    ->toggleable(isToggledHiddenByDefault: true),
             ])
             ->filters([
                 //
@@ -99,9 +65,9 @@ class UserResource extends Resource
                 Tables\Actions\EditAction::make(),
             ])
             ->bulkActions([
-                Tables\Actions\BulkActionGroup::make([
-                    Tables\Actions\DeleteBulkAction::make(),
-                ]),
+                // Tables\Actions\BulkActionGroup::make([
+                //     Tables\Actions\DeleteBulkAction::make(),
+                // ]),
             ]);
     }
 
@@ -116,9 +82,9 @@ class UserResource extends Resource
     {
         return [
             'index' => Pages\ListUsers::route('/'),
-            'create' => Pages\CreateUser::route('/create'),
-            'view' => Pages\ViewUser::route('/{record}'),
-            'edit' => Pages\EditUser::route('/{record}/edit'),
+            // 'create' => Pages\CreateUser::route('/create'),
+            // 'view' => Pages\ViewUser::route('/{record}'),
+            // 'edit' => Pages\EditUser::route('/{record}/edit'),
         ];
     }
 }

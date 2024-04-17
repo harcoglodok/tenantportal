@@ -32,6 +32,7 @@ class Unit extends Model
 
     public $fillable = [
         'no_unit',
+        'business_id',
         'name',
         'phone',
         'email',
@@ -46,6 +47,7 @@ class Unit extends Model
      */
     protected $casts = [
         'no_unit' => 'string',
+        'business_id' => 'string',
         'name' => 'string',
         'phone' => 'string',
         'email' => 'string',

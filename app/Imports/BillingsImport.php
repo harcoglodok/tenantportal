@@ -29,53 +29,68 @@ class BillingsImport implements ToCollection, WithHeadingRow
                     $pastData->delete();
                 }
             }
-            if ($this->validateRow($row)) {
-                BillingImportLogData::create([
-                    'billing_import_log_id' => $log->id,
-                    'status' => 'success',
-                    'message' => 'Successfully Import ' . trim($row['doc_no']) . ' to ' . $row['no_unit'],
-                ]);
-                // Billing::create([
-                //     'inv_no' => $row['doc_no'],
-                //     'month' => $row['fin_month'],
-                //     'year' => $row['fin_year'],
-                //     'tenant_id' => $row['tenant_id'],
-                //     's4_mbase_amt' => $row['s4_mbase_amt'],
-                //     's4_mtax_amt' => $row['s4_mtax_amt'],
-                //     'sd_mbase_amt' => $row['sd_mbase_amt'],
-                //     'service_charge' => $row['service_charge'],
-                //     'sinking_fund' => $row['sinking_fund'],
-                //     'electric_previous' => $row['electric_previous'],
-                //     'electric_current' => $row['electric_current'],
-                //     'electric_read' => $row['electric_read'],
-                //     'electric_fixed' => $row['electric_fixed'],
-                //     'electric_administration' => $row['electric_administration'],
-                //     'electric_tax' => $row['electric_tax'],
-                //     'electric_total' => $row['electric_total'],
-                //     'mcb' => $row['mcb'],
-                //     'water_previous' => $row['water_previous'],
-                //     'water_current' => $row['water_current'],
-                //     'water_read' => $row['water_read'],
-                //     'water_fixed' => $row['water_fixed'],
-                //     'water_mbase' => $row['water_mbase'],
-                //     'water_administration' => $row['water_administration'],
-                //     'water_tax' => $row['water_tax'],
-                //     'water_total' => $row['water_total'],
-                //     'total' => $row['total'],
-                //     'tube' => $row['tube'],
-                //     'panin' => $row['panin'],
-                //     'bca' => $row['bca'],
-                //     'cimb' => $row['cimb'],
-                //     'mandiri' => $row['mandiri'],
-                //     'add_charge' => $row['add_charge'],
-                //     'previous_transaction' => $row['previous_transaction'],
-                //     'status' => $row['status'],
-                // ]);
+            $unit = $this->validateRow($row);
+            if (!empty($unit)) {
+                try {
+                    $unit->update([
+                        'business_id' => trim($row['business_id']),
+                        'name' => trim($row['nama']),
+                        'email' => trim($row['email_bill']),
+                        'handphone' => trim($row['handphone_bill']),
+                    ]);
+                    Billing::create([
+                        'inv_no' => trim($row['doc_no']),
+                        'month' => trim($row['fin_month']),
+                        'year' => trim($row['fin_year']),
+                        'unit_id' => $unit->id,
+                        's4_mbase_amt' => 0,
+                        's4_mtax_amt' => 0,
+                        'sd_mbase_amt' => 0,
+                        'service_charge' => 0,
+                        'sinking_fund' => 0,
+                        'electric_previous' => 0,
+                        'electric_current' => 0,
+                        'electric_read' => 0,
+                        'electric_fixed' => 0,
+                        'electric_administration' => 0,
+                        'electric_tax' => 0,
+                        'electric_total' => 0,
+                        'mcb' => 0,
+                        'water_previous' => 0,
+                        'water_current' => 0,
+                        'water_read' => 0,
+                        'water_fixed' => 0,
+                        'water_mbase' => 0,
+                        'water_administration' => 0,
+                        'water_tax' => 0,
+                        'water_total' => 0,
+                        'total' => 0,
+                        'tube' => '',
+                        'panin' => trim($row['va_panin']),
+                        'bca' => trim($row['va_bca']),
+                        'cimb' => trim($row['va_cim']),
+                        'mandiri' => trim($row['va_man']),
+                        'add_charge' => doubleval(trim($row['add_charge'])),
+                        'previous_transaction' => doubleval(trim($row['previous_transaction'])),
+                        'status' => 'unpaid',
+                    ]);
+                    BillingImportLogData::create([
+                        'billing_import_log_id' => $log->id,
+                        'status' => 'success',
+                        'message' => 'Successfully Import ' . trim($row['doc_no']) . ' to ' . $row['no_unit'],
+                    ]);
+                } catch (\Throwable $th) {
+                    BillingImportLogData::create([
+                        'billing_import_log_id' => $log->id,
+                        'status' => 'failed',
+                        'message' => 'Failed to Import ' . trim($row['doc_no']) . ' : ' . $th->getMessage(),
+                    ]);
+                }
             } else {
                 BillingImportLogData::create([
                     'billing_import_log_id' => $log->id,
                     'status' => 'failed',
-                    'message' => 'Failed to Import ' . trim($row['doc_no']) . ' Unit Not Found',
+                    'message' => 'Failed to Import ' . trim($row['doc_no']) . ' : Unit Not Found',
                 ]);
             }
         }
@@ -85,8 +100,8 @@ class BillingsImport implements ToCollection, WithHeadingRow
     {
         if (isset($rowData['no_unit'])) {
             $unit = Unit::where('no_unit', trim($rowData['no_unit']))->first();
-            return !empty($unit);
+            return $unit;
         }
-        return false;
+        return null;
     }
 }

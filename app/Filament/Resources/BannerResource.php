@@ -24,17 +24,14 @@ class BannerResource extends Resource
         return $form
             ->schema([
                 Forms\Components\TextArea::make('title')
-                    ->required()
-                    ->rows(3)
-                    ->maxLength(50),
+                    ->required(),
                 Forms\Components\FileUpload::make('banner')
                     ->image()
                     ->imageEditor()
                     ->imageCropAspectRatio('16:9')
                     ->imageEditorAspectRatios(['16:9'])
                     ->required()
-                    ->directory('banners')
-                    ->columns(6),
+                    ->directory('banners'),
                 Forms\Components\Toggle::make('status')
                     ->label('Is Active')
                     ->default(true)

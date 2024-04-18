@@ -114,7 +114,6 @@ class ComplaintResource extends Resource
             ]);
     }
 
-
     public static function infolist(Infolist $infolist): Infolist
     {
         return $infolist

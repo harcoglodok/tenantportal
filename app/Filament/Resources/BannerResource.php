@@ -23,9 +23,9 @@ class BannerResource extends Resource
     {
         return $form
             ->schema([
-                Forms\Components\TextArea::make('title')
-                    ->required()
-                    ->maxLength(50),
+                // Forms\Components\TextArea::make('title')
+                //     ->required()
+                //     ->maxLength(50),
                 Forms\Components\FileUpload::make('banner')
                     ->image()
                     ->imageEditor()

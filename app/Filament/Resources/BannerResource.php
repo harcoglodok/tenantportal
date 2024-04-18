@@ -29,8 +29,8 @@ class BannerResource extends Resource
                 Forms\Components\FileUpload::make('banner')
                     ->image()
                     ->imageEditor()
-                    ->imageCropAspectRatio('16:9')
-                    ->imageEditorAspectRatios(['16:9'])
+                    // ->imageCropAspectRatio('16:9')
+                    // ->imageEditorAspectRatios(['16:9'])
                     ->required()
                     ->directory('banners'),
                 Forms\Components\Toggle::make('status')

@@ -25,16 +25,15 @@ class BannerResource extends Resource
             ->schema([
                 Forms\Components\TextArea::make('title')
                     ->required()
-                    ->rows(3)
                     ->maxLength(50),
-                // Forms\Components\FileUpload::make('banner')
-                //     ->image()
-                //     ->imageEditor()
-                //     ->imageCropAspectRatio('16:9')
-                //     ->imageEditorAspectRatios(['16:9'])
-                //     ->required()
-                //     ->directory('banners')
-                //     ->columns(6),
+                Forms\Components\FileUpload::make('banner')
+                    ->image()
+                    ->imageEditor()
+                    ->imageCropAspectRatio('16:9')
+                    ->imageEditorAspectRatios(['16:9'])
+                    ->required()
+                    ->directory('banners')
+                    ->columns(6),
                 Forms\Components\Toggle::make('status')
                     ->label('Is Active')
                     ->default(true)

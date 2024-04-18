@@ -32,8 +32,7 @@ class BannerResource extends Resource
                     ->imageCropAspectRatio('16:9')
                     ->imageEditorAspectRatios(['16:9'])
                     ->required()
-                    ->directory('banners')
-                    ->columns(6),
+                    ->directory('banners'),
                 Forms\Components\Toggle::make('status')
                     ->label('Is Active')
                     ->default(true)

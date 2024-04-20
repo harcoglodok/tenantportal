@@ -18,7 +18,7 @@ class CreateUnitsTable extends Migration
             $table->id();
             $table->string('no_unit');
             $table->string('business_id')->nullable();
-            $table->string('name');
+            $table->string('name')->nullable();
             $table->string('phone')->nullable();
             $table->string('email')->nullable();
             $table->string('number')->nullable();

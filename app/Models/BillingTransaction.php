@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model as Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
 
@@ -59,4 +60,14 @@ class BillingTransaction extends Model
         'image' => 'required|image|mimes:jpeg,png,jpg,gif|max:8192',
         'status' => 'required'
     ];
+
+    /**
+     * Get the verifiedBy that owns the BillingTransaction
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     */
+    public function verifiedBy(): BelongsTo
+    {
+        return $this->belongsTo(User::class, 'verified_by');
+    }
 }

@@ -3,6 +3,7 @@
 namespace App\Filament\Resources;
 
 use App\Filament\Resources\BillingResource\Pages;
+use App\Filament\Resources\BillingResource\RelationManagers\TransactionsRelationManager;
 use App\Models\Billing;
 use Filament\Forms;
 use Filament\Forms\Form;
@@ -63,56 +64,76 @@ class BillingResource extends Resource
     {
         return $infolist
             ->schema([
-                Section::make()->schema([
-                    TextEntry::make('inv_no')
-                        ->label('Invoice Number'),
-                    TextEntry::make('unit.no_unit')
-                        ->label('Unit'),
-                    TextEntry::make('status')
-                        ->badge()
-                        ->color(fn (string $state): string => match ($state) {
-                            'unpaid' => 'danger',
-                            'paid' => 'success',
-                        }),
-                    TextEntry::make('month'),
-                    TextEntry::make('year'),
-                    TextEntry::make('s4_mbase_amt')->placeholder('-'),
-                    TextEntry::make('s4_mtax_amt')->placeholder('-'),
-                    TextEntry::make('sd_mbase_amt')->placeholder('-'),
-                    TextEntry::make('service_charge')->placeholder('-'),
-                    TextEntry::make('sinking_fund')->placeholder('-'),
-                    TextEntry::make('electric_previous')->placeholder('-'),
-                    TextEntry::make('electric_current')->placeholder('-'),
-                    TextEntry::make('electric_read')->placeholder('-'),
-                    TextEntry::make('electric_fixed')->placeholder('-'),
-                    TextEntry::make('electric_administration')->placeholder('-'),
-                    TextEntry::make('electric_tax')->placeholder('-'),
-                    TextEntry::make('electric_total')->placeholder('-'),
-                    TextEntry::make('mcb')->placeholder('-'),
-                    TextEntry::make('water_previous')->placeholder('-'),
-                    TextEntry::make('water_current')->placeholder('-'),
-                    TextEntry::make('water_read')->placeholder('-'),
-                    TextEntry::make('water_fixed')->placeholder('-'),
-                    TextEntry::make('water_mbase')->placeholder('-'),
-                    TextEntry::make('water_administration')->placeholder('-'),
-                    TextEntry::make('water_tax')->placeholder('-'),
-                    TextEntry::make('water_total')->placeholder('-'),
-                    TextEntry::make('total')->placeholder('-'),
-                    TextEntry::make('tube')->placeholder('-'),
-                    TextEntry::make('panin')->placeholder('-'),
-                    TextEntry::make('bca')->placeholder('-'),
-                    TextEntry::make('cimb')->placeholder('-'),
-                    TextEntry::make('mandiri')->placeholder('-'),
-                    TextEntry::make('add_charge')->placeholder('-'),
-                    TextEntry::make('previous_transaction')->placeholder('-'),
-                ])->columns(3),
+                Section::make('Invoice')
+                    ->icon('heroicon-m-shopping-bag')
+                    ->aside()
+                    ->schema([
+                        TextEntry::make('inv_no')
+                            ->label('Invoice Number'),
+                        TextEntry::make('unit.no_unit')
+                            ->label('Unit'),
+                        TextEntry::make('unit.user.name')
+                            ->label('Owner'),
+                        TextEntry::make('month'),
+                        TextEntry::make('year'),
+                        TextEntry::make('status')
+                            ->badge()
+                            ->color(fn (string $state): string => match ($state) {
+                                'unpaid' => 'danger',
+                                'paid' => 'success',
+                            }),
+                        TextEntry::make('service_charge')->placeholder('-')->numeric(),
+                        TextEntry::make('sinking_fund')->placeholder('-')->numeric(),
+                        TextEntry::make('add_charge')->placeholder('-'),
+                        TextEntry::make('s4_mbase_amt')->placeholder('-')->numeric(),
+                        TextEntry::make('s4_mtax_amt')->placeholder('-')->numeric(),
+                        TextEntry::make('sd_mbase_amt')->placeholder('-')->numeric(),
+                        TextEntry::make('previous_transaction')->placeholder('-'),
+                        TextEntry::make('total')->placeholder('-')->numeric(),
+                    ])->columns(3),
+                Section::make('Electric')
+                    ->icon('heroicon-m-bolt')
+                    ->aside()
+                    ->schema([
+                        TextEntry::make('mcb')->placeholder('-')->numeric(),
+                        TextEntry::make('electric_previous')->placeholder('-')->numeric(),
+                        TextEntry::make('electric_current')->placeholder('-')->numeric(),
+                        TextEntry::make('electric_read')->placeholder('-')->numeric(),
+                        TextEntry::make('electric_fixed')->placeholder('-')->numeric(),
+                        TextEntry::make('electric_administration')->placeholder('-')->numeric(),
+                        TextEntry::make('electric_tax')->placeholder('-')->numeric(),
+                        TextEntry::make('electric_total')->placeholder('-')->numeric(),
+                    ])->columns(3),
+                Section::make('Water')
+                    ->icon('heroicon-m-cloud')
+                    ->aside()
+                    ->schema([
+                        TextEntry::make('tube')->placeholder('-'),
+                        TextEntry::make('water_previous')->placeholder('-')->numeric(),
+                        TextEntry::make('water_current')->placeholder('-')->numeric(),
+                        TextEntry::make('water_read')->placeholder('-')->numeric(),
+                        TextEntry::make('water_fixed')->placeholder('-')->numeric(),
+                        TextEntry::make('water_mbase')->placeholder('-')->numeric(),
+                        TextEntry::make('water_administration')->placeholder('-')->numeric(),
+                        TextEntry::make('water_tax')->placeholder('-')->numeric(),
+                        TextEntry::make('water_total')->placeholder('-')->numeric(),
+                    ])->columns(3),
+                Section::make('Bank')
+                    ->icon('heroicon-m-credit-card')
+                    ->aside()
+                    ->schema([
+                        TextEntry::make('panin')->placeholder('-'),
+                        TextEntry::make('bca')->placeholder('-'),
+                        TextEntry::make('cimb')->placeholder('-'),
+                        TextEntry::make('mandiri')->placeholder('-'),
+                    ])->columns(3),
             ]);
     }
 
     public static function getRelations(): array
     {
         return [
-            //
+            TransactionsRelationManager::class,
         ];
     }
 

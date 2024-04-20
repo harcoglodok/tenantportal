@@ -7,13 +7,8 @@ use App\Models\BillingImportLog;
 use App\Models\BillingImportLogData;
 use App\Models\Unit;
 use Illuminate\Support\Collection;
-use Illuminate\Validation\Rule;
-use Maatwebsite\Excel\Concerns\SkipsEmptyRows;
 use Maatwebsite\Excel\Concerns\ToCollection;
-use Maatwebsite\Excel\Concerns\WithEvents;
 use Maatwebsite\Excel\Concerns\WithHeadingRow;
-use Maatwebsite\Excel\Concerns\WithValidation;
-use Maatwebsite\Excel\Events\AfterImport;
 
 class BillingsImport implements ToCollection, WithHeadingRow
 {
@@ -26,7 +21,9 @@ class BillingsImport implements ToCollection, WithHeadingRow
                     ->where("year", $row['fin_year'])
                     ->get();
                 if ($pastData->count() > 0) {
-                    $pastData->delete();
+                    Billing::where("month", $row['fin_month'])
+                        ->where("year", $row['fin_year'])
+                        ->delete();
                 }
             }
             $unit = $this->validateRow($row);

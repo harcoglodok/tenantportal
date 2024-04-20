@@ -23,7 +23,7 @@ class BannerResource extends Resource
     {
         return $form
             ->schema([
-                Forms\Components\TextArea::make('title')
+                Forms\Components\Textarea::make('title')
                     ->required()
                     ->rows(3)
                     ->maxLength(50),

@@ -11,8 +11,8 @@ use Illuminate\Database\Eloquent\SoftDeletes;
  * @package App\Models
  * @version April 2, 2024, 9:51 am UTC
  *
- * @property foreignId $billing_id
- * @property foreignId $user_id
+ * @property integer $billing_id
+ * @property integer $user_id
  * @property string $image
  * @property string $status
  * @property string $message

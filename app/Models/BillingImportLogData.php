@@ -10,7 +10,7 @@ use Illuminate\Database\Eloquent\Model as Model;
  * @package App\Models
  * @version April 17, 2024, 10:03 am UTC
  *
- * @property foreignId $billing_import_log_id
+ * @property integer $billing_import_log_id
  * @property string $file
  */
 class BillingImportLogData extends Model

@@ -12,10 +12,10 @@ use Illuminate\Database\Eloquent\SoftDeletes;
  * @package App\Models
  * @version April 2, 2024, 7:18 am UTC
  *
- * @property foreignId $complaint_id
+ * @property integer $complaint_id
  * @property string $reply
  * @property string $status
- * @property foreignId $user_id
+ * @property integer $user_id
  */
 class ComplaintReply extends Model
 {

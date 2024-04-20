@@ -15,7 +15,7 @@ use Illuminate\Database\Eloquent\SoftDeletes;
  * @property string $inv_no
  * @property string $month
  * @property string $year
- * @property foreignId $tenant_id
+ * @property integer $tenant_id
  * @property number $s4_mbase_amt
  * @property number $s4_mtax_amt
  * @property number $sd_mbase_amt
@@ -51,13 +51,9 @@ class Billing extends Model
 {
     use SoftDeletes;
 
-
     public $table = 'billings';
 
-
     protected $dates = ['deleted_at'];
-
-
 
     public $fillable = [
         'inv_no',

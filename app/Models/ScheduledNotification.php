@@ -12,18 +12,18 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
  * @package App\Models
  * @version April 2, 2024, 8:06 am UTC
  *
- * @property foreignId $notification_category_id
+ * @property integer $notification_category_id
  * @property string $title
  * @property string $image
  * @property string $message
  * @property string $date
  */
-class Notification extends Model
+class ScheduledNotification extends Model
 {
     use SoftDeletes;
 
 
-    public $table = 'notifications';
+    public $table = 'scheduled_notifications';
 
 
     protected $dates = ['deleted_at'];

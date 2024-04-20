@@ -12,7 +12,7 @@ use Illuminate\Database\Eloquent\SoftDeletes;
  * @package App\Models
  * @version April 2, 2024, 10:03 am UTC
  *
- * @property foreignId $user_id
+ * @property integer $user_id
  * @property string $file
  */
 class BillingImportLog extends Model

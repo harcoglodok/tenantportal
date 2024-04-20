@@ -3,8 +3,7 @@
 namespace App\Filament\Resources;
 
 use App\Filament\Resources\NotificationResource\Pages;
-use App\Filament\Resources\NotificationResource\RelationManagers;
-use App\Models\Notification;
+use App\Models\ScheduledNotification;
 use Filament\Forms;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
@@ -15,7 +14,7 @@ use Illuminate\Database\Eloquent\SoftDeletingScope;
 
 class NotificationResource extends Resource
 {
-    protected static ?string $model = Notification::class;
+    protected static ?string $model = ScheduledNotification::class;
 
     protected static ?string $navigationIcon = 'heroicon-o-bell-alert';
 

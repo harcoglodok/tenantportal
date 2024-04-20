@@ -2,6 +2,7 @@
 
 namespace App\Http\Resources;
 
+use App\Models\ComplaintReply;
 use Illuminate\Http\Resources\Json\JsonResource;
 
 class ComplaintResource extends JsonResource
@@ -17,13 +18,15 @@ class ComplaintResource extends JsonResource
         return [
             'id' => $this->id,
             'category_id' => $this->category_id,
+            'category_name' => $this->category->title,
             'title' => $this->title,
             'content' => $this->content,
             'photo' => $this->photo,
-            'created_by' => $this->created_by,
-            'updated_by' => $this->updated_by,
+            'created_by' => $this->createdBy->name,
+            'updated_by' => $this->updatedBy->name,
             'created_at' => $this->created_at,
-            'updated_at' => $this->updated_at
+            'updated_at' => $this->updated_at,
+            'replies' => ComplaintReplyResource::collection($this->replies),
         ];
     }
 }

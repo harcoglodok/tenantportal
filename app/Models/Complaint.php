@@ -64,9 +64,7 @@ class Complaint extends Model
         'category_id' => 'required',
         'content' => 'required',
         'status' => 'required',
-        'photo' => 'image|mimes:jpeg,png,jpg,gif|max:8192',
-        'created_by' => 'required',
-        'updated_by' => 'required'
+        'photo' => 'image|mimes:jpeg,png,jpg,gif|max:8192'
     ];
 
     /**

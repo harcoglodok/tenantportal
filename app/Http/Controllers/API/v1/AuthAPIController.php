@@ -9,7 +9,7 @@ use App\Models\User;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Validator;
 
-class AuthController extends AppBaseController
+class AuthAPIController extends AppBaseController
 {
     public function login(Request $request)
     {
@@ -19,7 +19,6 @@ class AuthController extends AppBaseController
         ]);
 
         if ($validator->fails()) {
-            $errors = $validator->errors();
             return $this->sendError('Failed Login');
         }
 

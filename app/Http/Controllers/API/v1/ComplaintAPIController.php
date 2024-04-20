@@ -35,6 +35,7 @@ class ComplaintAPIController extends AppBaseController
      */
     public function index(Request $request)
     {
+        $request->merge(['user_id' => auth()->user()->id]);
         $complaints = $this->complaintRepository->all(
             $request->except(['skip', 'limit']),
             $request->get('skip'),
@@ -54,6 +55,7 @@ class ComplaintAPIController extends AppBaseController
      */
     public function store(CreateComplaintAPIRequest $request)
     {
+        $request->merge(['created_by' => auth()->user()->id, 'updated_by' => auth()->user()->id]);
         $input = $request->all();
 
         $complaint = $this->complaintRepository->create($input);

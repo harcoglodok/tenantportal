@@ -27,25 +27,28 @@ class UnitResource extends Resource
     {
         return $form
             ->schema([
-                Forms\Components\TextInput::make('no_unit')
-                    ->required()
-                    ->maxLength(255),
-                Forms\Components\TextInput::make('business_id')
-                    ->maxLength(255),
-                Forms\Components\TextInput::make('name')
-                    ->required()
-                    ->maxLength(255),
-                Forms\Components\TextInput::make('phone')
-                    ->tel()
-                    ->maxLength(255),
-                Forms\Components\TextInput::make('email')
-                    ->email()
-                    ->maxLength(255),
-                Forms\Components\TextInput::make('number')
-                    ->maxLength(255),
-                Forms\Components\Select::make('user_id')
-                    ->relationship('user', 'name')
-                    ->required(),
+                Forms\Components\Section::make('')->schema([
+                    Forms\Components\TextInput::make('no_unit')
+                        ->required()
+                        ->maxLength(255),
+                    Forms\Components\TextInput::make('business_id')
+                        ->maxLength(255),
+                    Forms\Components\TextInput::make('name')
+                        ->maxLength(255),
+                    Forms\Components\TextInput::make('phone')
+                        ->tel()
+                        ->maxLength(255),
+                    Forms\Components\TextInput::make('email')
+                        ->email()
+                        ->maxLength(255),
+                    Forms\Components\TextInput::make('number')
+                        ->maxLength(255),
+                    Forms\Components\Select::make('user_id')
+                        ->relationship('user', 'name', function (Builder $query) {
+                            $query->where('role','tenant');
+                        })
+                        ->required(),
+                ])->columns(2)
             ]);
     }
 
@@ -53,21 +56,24 @@ class UnitResource extends Resource
     {
         return $table
             ->columns([
+                Tables\Columns\TextColumn::make('no')->rowIndex(),
                 Tables\Columns\TextColumn::make('no_unit')
                     ->searchable(),
+                Tables\Columns\TextColumn::make('user.name')
+                    ->label('Owner')
+                    ->sortable(),
                 Tables\Columns\TextColumn::make('business_id')
+                    ->default('-')
                     ->searchable(),
                 Tables\Columns\TextColumn::make('name')
+                    ->default('-')
                     ->searchable(),
                 Tables\Columns\TextColumn::make('phone')
+                    ->default('-')
                     ->searchable(),
                 Tables\Columns\TextColumn::make('email')
+                    ->default('-')
                     ->searchable(),
-                Tables\Columns\TextColumn::make('number')
-                    ->searchable(),
-                Tables\Columns\TextColumn::make('user.name')
-                    ->numeric()
-                    ->sortable(),
                 Tables\Columns\TextColumn::make('created_at')
                     ->dateTime()
                     ->sortable()

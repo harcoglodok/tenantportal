@@ -25,7 +25,7 @@ class AuthAPIController extends AppBaseController
         if (Auth::attempt($request->only('email', 'password'))) {
             /** @var User $user */
             $user = Auth::user();
-            if ($user->verifiedAt != null) {
+            if ($user->verified_at != null) {
                 $token = $user->createToken('api-token')->plainTextToken;
                 $message = 'Login Success!!';
 
@@ -36,7 +36,7 @@ class AuthAPIController extends AppBaseController
                     ],
                     $message,
                 );
-            } else if($user->blockedAt != null) {
+            } else if($user->blocked_at != null) {
                 return $this->sendResponse(
                     [
                         'user' => new UserResource($user),

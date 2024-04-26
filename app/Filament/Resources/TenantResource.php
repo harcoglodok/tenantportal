@@ -2,23 +2,24 @@
 
 namespace App\Filament\Resources;
 
-use App\Filament\Resources\TenantResource\Pages;
-use App\Filament\Resources\TenantResource\RelationManagers\UnitsRelationManager;
-use App\Models\User;
 use Carbon\Carbon;
 use Filament\Forms;
-use Filament\Forms\Components\TextInput;
+use App\Models\User;
+use Filament\Tables;
 use Filament\Forms\Form;
+use Filament\Tables\Table;
+use Filament\Infolists\Infolist;
+use Filament\Resources\Resource;
+use Filament\Tables\Actions\Action;
+use Filament\Forms\Components\TextInput;
+use Filament\Notifications\Notification;
+use Filament\Tables\Actions\ActionGroup;
+use Illuminate\Database\Eloquent\Builder;
 use Filament\Infolists\Components\Section;
 use Filament\Infolists\Components\TextEntry;
-use Filament\Infolists\Infolist;
-use Filament\Notifications\Notification;
-use Filament\Resources\Resource;
-use Filament\Tables;
-use Filament\Tables\Actions\Action;
-use Filament\Tables\Actions\ActionGroup;
-use Filament\Tables\Table;
-use Illuminate\Database\Eloquent\Builder;
+use Filament\Infolists\Components\ImageEntry;
+use App\Filament\Resources\TenantResource\Pages;
+use App\Filament\Resources\TenantResource\RelationManagers\UnitsRelationManager;
 
 class TenantResource extends Resource
 {
@@ -167,6 +168,12 @@ class TenantResource extends Resource
         return $infolist
             ->schema([
                 Section::make()->schema([
+                    ImageEntry::make('avatar')
+                        ->label('')
+                        ->defaultImageUrl(url('/images/placeholder.png'))
+                        ->circular(),
+                    TextEntry::make(''),
+                    TextEntry::make(''),
                     TextEntry::make('name'),
                     TextEntry::make('email'),
                     TextEntry::make('birthdate')

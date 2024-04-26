@@ -36,6 +36,14 @@ class AuthAPIController extends AppBaseController
                     ],
                     $message,
                 );
+            } else if($user->blockedAt != null) {
+                return $this->sendResponse(
+                    [
+                        'user' => new UserResource($user),
+                        'token' => '-',
+                    ],
+                    'Akun user diblokir',
+                );
             } else {
                 return $this->sendResponse(
                     [

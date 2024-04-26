@@ -3,11 +3,7 @@
 namespace App\Http\Controllers\api\v1;
 
 use App\Models\User;
-use App\Traits\ApiResponse;
-use App\Traits\ResponseApi;
 use Illuminate\Http\Request;
-use App\Traits\FileUploadTrait;
-use App\Http\Controllers\Controller;
 use App\Http\Resources\UserResource;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
@@ -49,10 +45,16 @@ class UserAPIController extends AppBaseController
     {
         /** @var User $user */
         $user = Auth::user();
+        if ($request->email) {
+            $checkUserEmail = User::where('email', $request->email)->where('id', '!=', $user->id)->first();
+            if($checkUserEmail){
+                return $this->sendError('Email sudah digunakan');
+            }
+        }
         $data['name'] = $request->name ?? $user->name;
         $data['email'] = $request->email ?? $user->email;
         $data['birthdate'] = $request->birthdate ?? $user->birthdate;
-        if($request->hasFile('avatar')){
+        if ($request->hasFile('avatar')) {
             $file = $request->file('avatar');
             $data['avatar'] = $this->fileUpdate('avatars', $file, $user->avatar);
         }

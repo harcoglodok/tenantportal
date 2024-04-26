@@ -40,6 +40,13 @@ class TenantResource extends Resource
                     Forms\Components\TextInput::make('name')
                         ->required()
                         ->maxLength(255),
+                    Forms\Components\FileUpload::make('avatar')
+                        ->label('Avatar')
+                        ->directory('avatars')
+                        ->image()
+                        ->imageEditor()
+                        ->imageCropAspectRatio('1:1')
+                        ->imageEditorAspectRatios(['1:1']),
                     Forms\Components\TextInput::make('email')
                         ->email()
                         ->unique()
@@ -67,6 +74,9 @@ class TenantResource extends Resource
                 Tables\Columns\TextColumn::make('no')->rowIndex(),
                 Tables\Columns\TextColumn::make('name')
                     ->searchable(),
+                Tables\Columns\ImageColumn::make('avatar')
+                    ->defaultImageUrl(url('/images/placeholder.png'))
+                    ->circular(),
                 Tables\Columns\TextColumn::make('email')
                     ->searchable(),
                 Tables\Columns\IconColumn::make('is_verified')

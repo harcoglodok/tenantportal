@@ -14,6 +14,7 @@ class CreateTenant extends CreateRecord
     protected function handleRecordCreation(array $data): User
     {
         $data['password'] = bcrypt($data['password']);
+        $data['verified_at'] = now();
         $record =  static::getModel()::create($data);
 
         return $record;

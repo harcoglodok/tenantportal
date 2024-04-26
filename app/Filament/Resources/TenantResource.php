@@ -98,6 +98,7 @@ class TenantResource extends Resource
                         ->label('Verify User')
                         ->color('success')
                         ->icon('heroicon-m-check-badge')
+                        ->disabled(fn (User $record) => $record->verified_at != null)
                         ->requiresConfirmation()
                         ->action(function (User $record) {
                             $record->update([
@@ -115,6 +116,7 @@ class TenantResource extends Resource
                         ->color('danger')
                         ->icon('heroicon-m-no-symbol')
                         ->requiresConfirmation()
+                        ->disabled(fn (User $record) => $record->blocked_at != null)
                         ->form([
                             TextInput::make('message')
                                 ->required(),
@@ -127,8 +129,26 @@ class TenantResource extends Resource
                             ]);
                             Notification::make()
                                 ->success()
-                                ->title('Verify Successed')
-                                ->body('User verified successfully.')
+                                ->title('Block Successed')
+                                ->body('User blocked successfully.')
+                                ->send();
+                        }),
+                    Action::make('unblockUser')
+                        ->label('Unblock User')
+                        ->color('info')
+                        ->icon('heroicon-m-lock-open')
+                        ->requiresConfirmation()
+                        ->disabled(fn (User $record) => $record->blocked_at == null)
+                        ->action(function (User $record) {
+                            $record->update([
+                                'blocked_at' => null,
+                                'blocked_by' => null,
+                                'block_message' => '',
+                            ]);
+                            Notification::make()
+                                ->success()
+                                ->title('Unblock Successed')
+                                ->body('User unblock successfully.')
                                 ->send();
                         }),
                     Tables\Actions\ViewAction::make(),

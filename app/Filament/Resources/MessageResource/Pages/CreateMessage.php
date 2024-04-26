@@ -28,14 +28,14 @@ class CreateMessage extends CreateRecord
             $this->sendPushNotificationMultiple(
                 $deviceTokens,
                 $this->record->title,
-                $storedDataId,
+                'Open Notif',
                 ['id' => $storedDataId],
             );
         } else {
             $this->sendPushNotificationTopic(
                 'global_message',
                 $this->record->title,
-                $storedDataId,
+                'Open Notif',
                 ['id' => $storedDataId],
             );
         }

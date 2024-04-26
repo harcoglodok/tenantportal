@@ -1,17 +1,18 @@
 <?php
 
-use App\Http\Controllers\API\v1\AuthAPIController;
-use App\Http\Controllers\API\v1\BillingAPIController;
-use App\Http\Controllers\API\v1\BillingTransactionAPIController;
-use App\Http\Controllers\API\v1\ComplaintAPIController;
-use App\Http\Controllers\API\v1\ComplaintCategoryAPIController;
-use App\Http\Controllers\API\v1\ComplaintReplyAPIController;
-use App\Http\Controllers\API\v1\MessageAPIController;
-use App\Http\Controllers\API\v1\UnitAPIController;
-use App\Http\Controllers\api\v1\UserAPIController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\API\v1\AuthAPIController;
+use App\Http\Controllers\API\v1\CronAPIController;
+use App\Http\Controllers\API\v1\UnitAPIController;
+use App\Http\Controllers\api\v1\UserAPIController;
 use App\Http\Controllers\API\v1\BannerAPIController;
+use App\Http\Controllers\API\v1\BillingAPIController;
+use App\Http\Controllers\API\v1\MessageAPIController;
+use App\Http\Controllers\API\v1\ComplaintAPIController;
+use App\Http\Controllers\API\v1\ComplaintReplyAPIController;
+use App\Http\Controllers\API\v1\ComplaintCategoryAPIController;
+use App\Http\Controllers\API\v1\BillingTransactionAPIController;
 
 /*
 |--------------------------------------------------------------------------
@@ -44,5 +45,10 @@ Route::prefix('v1')->group(function () {
     Route::prefix('master')->group(function () {
         Route::apiResource('banners', BannerAPIController::class);
         Route::apiResource('complaint_categories', ComplaintCategoryAPIController::class);
+    });
+    Route::prefix('cron')->group(function () {
+        Route::get('scheduled_notification', [CronAPIController::class, 'scheduledNotification']);
+        Route::get('birthday_notification', [CronAPIController::class, 'birthdayNotification']);
+        Route::get('done_complaint', [CronAPIController::class, 'doneComplaint']);
     });
 });

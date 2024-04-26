@@ -25,16 +25,26 @@ class AuthAPIController extends AppBaseController
         if (Auth::attempt($request->only('email', 'password'))) {
             /** @var User $user */
             $user = Auth::user();
-            $token = $user->createToken('api-token')->plainTextToken;
-            $message = 'Login Success!!';
+            if ($user->verifiedAt != null) {
+                $token = $user->createToken('api-token')->plainTextToken;
+                $message = 'Login Success!!';
 
-            return $this->sendResponse(
-                [
-                    'user' => new UserResource($user),
-                    'token' => $token,
-                ],
-                $message,
-            );
+                return $this->sendResponse(
+                    [
+                        'user' => new UserResource($user),
+                        'token' => $token,
+                    ],
+                    $message,
+                );
+            } else {
+                return $this->sendResponse(
+                    [
+                        'user' => new UserResource($user),
+                        'token' => '-',
+                    ],
+                    'User belum terverifikasi',
+                );
+            }
         }
 
         return $this->sendError('Sign In Failed', 401);

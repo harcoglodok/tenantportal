@@ -2,16 +2,20 @@
 
 namespace App\Filament\Resources;
 
-use App\Filament\Resources\UnitResource\Pages;
-use App\Filament\Resources\UnitResource\RelationManagers;
-use App\Models\Unit;
 use Filament\Forms;
-use Filament\Forms\Form;
-use Filament\Resources\Resource;
+use App\Models\Unit;
 use Filament\Tables;
+use Filament\Forms\Form;
 use Filament\Tables\Table;
+use Filament\Infolists\Infolist;
+use Filament\Resources\Resource;
 use Illuminate\Database\Eloquent\Builder;
+use Filament\Infolists\Components\Section;
+use Filament\Infolists\Components\TextEntry;
+use App\Filament\Resources\UnitResource\Pages;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
+use App\Filament\Resources\UnitResource\RelationManagers;
+use App\Filament\Resources\UnitResource\RelationManagers\BillingsRelationManager;
 
 class UnitResource extends Resource
 {
@@ -45,7 +49,7 @@ class UnitResource extends Resource
                         ->maxLength(255),
                     Forms\Components\Select::make('user_id')
                         ->relationship('user', 'name', function (Builder $query) {
-                            $query->where('role','tenant');
+                            $query->where('role', 'tenant');
                         })
                         ->required(),
                 ])->columns(2)
@@ -103,10 +107,36 @@ class UnitResource extends Resource
             ]);
     }
 
+
+    public static function infolist(Infolist $infolist): Infolist
+    {
+        return $infolist
+            ->schema([
+                Section::make('')
+                    ->schema([
+                        TextEntry::make('no_unit')
+                            ->default('-')
+                            ->label('No Unit'),
+                        TextEntry::make('user.name')
+                            ->default('-')
+                            ->label('Owner'),
+                        TextEntry::make('name')
+                            ->default('-'),
+                        TextEntry::make('business_id')
+                            ->default('-')
+                            ->label('Owner'),
+                        TextEntry::make('email')
+                            ->default('-'),
+                        TextEntry::make('phone')
+                            ->default('-'),
+                    ])->columns(3),
+            ]);
+    }
+
     public static function getRelations(): array
     {
         return [
-            //
+            BillingsRelationManager::class,
         ];
     }
 

@@ -8,10 +8,8 @@ trait FileStorage
 {
     public function fileUpload($folder, $image)
     {
-        $extension = $image->getClientOriginalExtension();
-        $name = $folder . '/' . uniqid() . '.' . $extension;
-        Storage::putFile($name, $image);
-        return $name;
+        $storagePath = Storage::disk('public')->put($folder, $image);
+        return $storagePath;
     }
 
     public function fileUpdate($folder, $image, $old_image)
@@ -22,8 +20,8 @@ trait FileStorage
 
     public function fileDelete($image)
     {
-        if ($image && Storage::exists($image)) {
-            Storage::delete($image);
+        if ($image && Storage::disk('public')->exists($image)) {
+            Storage::disk('public')->delete($image);
         }
     }
 }

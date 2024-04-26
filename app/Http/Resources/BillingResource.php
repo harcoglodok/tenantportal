@@ -19,7 +19,7 @@ class BillingResource extends JsonResource
             'inv_no' => $this->inv_no,
             'month' => $this->month,
             'year' => $this->year,
-            'tenant_id' => $this->tenant_id,
+            'unit_id' => $this->unit_id,
             's4_mbase_amt' => $this->s4_mbase_amt,
             's4_mtax_amt' => $this->s4_mtax_amt,
             'sd_mbase_amt' => $this->sd_mbase_amt,

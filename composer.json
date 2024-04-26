@@ -14,6 +14,7 @@
         "filament/spatie-laravel-translatable-plugin": "^3.0",
         "guzzlehttp/guzzle": "^7.2",
         "infyomlabs/laravel-generator": "^6.0",
+        "kreait/firebase-php": "^7.10",
         "laravel/framework": "^10.10",
         "laravel/horizon": "^5.21",
         "laravel/sanctum": "^3.3",

@@ -141,7 +141,7 @@ class TenantResource extends Resource
                     TextEntry::make('email'),
                     TextEntry::make('birthdate')
                         ->placeholder('-')
-                        ->dateTime('d m Y'),
+                        ->dateTime(),
                     TextEntry::make('verified_at')
                         ->dateTime()
                         ->placeholder('-'),

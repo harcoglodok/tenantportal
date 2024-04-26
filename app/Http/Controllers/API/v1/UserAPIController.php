@@ -2,7 +2,6 @@
 
 namespace App\Http\Controllers\api\v1;
 
-use App\Http\Controllers\AppBaseController;
 use App\Models\User;
 use App\Traits\ApiResponse;
 use App\Traits\ResponseApi;
@@ -12,7 +11,9 @@ use App\Http\Controllers\Controller;
 use App\Http\Resources\UserResource;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
+use Filament\Notifications\Notification;
 use Illuminate\Support\Facades\Validator;
+use App\Http\Controllers\AppBaseController;
 
 class UserAPIController extends AppBaseController
 {
@@ -34,6 +35,13 @@ class UserAPIController extends AppBaseController
 
         $user = User::find($user->id);
 
+        $admins = User::whereIn('role', ['root', 'admin'])->get();
+        if ($admins) {
+            Notification::make()
+                ->title('User ' . $user->name . ' melakukan update password')
+                ->sendToDatabase($admins);
+        }
+
         return $this->sendResponse(new UserResource($user), 'Update password successfully');
     }
 
@@ -43,8 +51,20 @@ class UserAPIController extends AppBaseController
         $user = Auth::user();
         $data['name'] = $request->name ?? $user->name;
         $data['email'] = $request->email ?? $user->email;
+        $data['birthdate'] = $request->birthdate ?? $user->birthdate;
+        if($request->hasFile('avatar')){
+            $file = $request->file('avatar');
+            $data['avatar'] = $this->fileUpdate('avatars', $file, $user->avatar);
+        }
         $user->update($data);
         $user = User::find($user->id);
+
+        $admins = User::whereIn('role', ['root', 'admin'])->get();
+        if ($admins) {
+            Notification::make()
+                ->title('User ' . $user->name . ' melakukan update data')
+                ->sendToDatabase($admins);
+        }
         return $this->sendResponse(new UserResource($user), 'Update user successfully');
     }
 }

@@ -2,14 +2,16 @@
 
 namespace App\Http\Controllers\API\v1;
 
+use Response;
+use App\Models\User;
+use App\Models\Complaint;
+use Illuminate\Http\Request;
+use Filament\Notifications\Notification;
+use App\Http\Resources\ComplaintResource;
+use App\Repositories\ComplaintRepository;
+use App\Http\Controllers\AppBaseController;
 use App\Http\Requests\API\CreateComplaintAPIRequest;
 use App\Http\Requests\API\UpdateComplaintAPIRequest;
-use App\Models\Complaint;
-use App\Repositories\ComplaintRepository;
-use Illuminate\Http\Request;
-use App\Http\Controllers\AppBaseController;
-use App\Http\Resources\ComplaintResource;
-use Response;
 
 /**
  * Class ComplaintController
@@ -59,6 +61,13 @@ class ComplaintAPIController extends AppBaseController
         $input = $request->all();
 
         $complaint = $this->complaintRepository->create($input);
+
+        $admins = User::whereIn('role', ['root', 'admin'])->get();
+        if ($admins) {
+            Notification::make()
+                ->title('Terdapat komplain baru dari ' . $complaint->createdBy->name)
+                ->sendToDatabase($admins);
+        }
 
         return $this->sendResponse(new ComplaintResource($complaint), 'Complaint saved successfully');
     }

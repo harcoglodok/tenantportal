@@ -4,7 +4,6 @@ namespace App\Filament\Resources\TenantResource\Pages;
 
 use App\Filament\Resources\TenantResource;
 use App\Models\User;
-use Filament\Actions;
 use Filament\Resources\Pages\CreateRecord;
 
 class CreateTenant extends CreateRecord
@@ -15,6 +14,8 @@ class CreateTenant extends CreateRecord
     {
         $data['password'] = bcrypt($data['password']);
         $data['verified_at'] = now();
+        $data['verified_by'] = auth()->user()->id;
+        $data['role'] = 'tenant';
         $record =  static::getModel()::create($data);
 
         return $record;

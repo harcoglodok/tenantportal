@@ -2,12 +2,13 @@
 
 namespace App\Http\Controllers\API\v1;
 
-use App\Http\Controllers\AppBaseController;
+use App\Models\User;
 use Illuminate\Http\Request;
 use App\Http\Resources\UserResource;
-use App\Models\User;
 use Illuminate\Support\Facades\Auth;
+use Filament\Notifications\Notification;
 use Illuminate\Support\Facades\Validator;
+use App\Http\Controllers\AppBaseController;
 
 class AuthAPIController extends AppBaseController
 {
@@ -36,7 +37,7 @@ class AuthAPIController extends AppBaseController
                     ],
                     $message,
                 );
-            } else if($user->blocked_at != null) {
+            } else if ($user->blocked_at != null) {
                 return $this->sendResponse(
                     [
                         'user' => new UserResource($user),
@@ -56,6 +57,43 @@ class AuthAPIController extends AppBaseController
         }
 
         return $this->sendError('Sign In Failed', 401);
+    }
+
+    public function register(Request $request)
+    {
+        $validator = Validator::make($request->all(), [
+            'name' => 'required|string|max:255',
+            'email' => 'required|string|email|unique:users,email',
+            'password' => 'required|string|min:6',
+            'avatar' => 'nullable|image|mimes:jpeg,png,jpg,gif',
+            'birthdate' => 'nullable|date',
+        ]);
+
+        if ($validator->fails()) {
+            return $this->sendErrorWithData('Gagal melakukan pendaftaran', $validator->errors()->toArray(), 422);
+        }
+
+        $userData = $request->only(['name', 'email', 'password', 'avatar', 'birthdate']);
+
+        if ($request->hasFile('avatar')) {
+            $avatar = $request->file('avatar');
+            $avatarPath = $this->fileUpload('avatars', $avatar);
+            $userData['avatar'] = $avatarPath;
+        }
+
+        $userData['password'] = bcrypt($userData['password']);
+        $userData['role'] = 'tenant';
+
+        $user = User::create($userData);
+
+        $admins = User::whereIn('role', ['root', 'admin'])->get();
+        if ($admins) {
+            Notification::make()
+                ->title('Terdapat user baru yang melakukan registrasi pada aplikasi')
+                ->sendToDatabase($admins);
+        }
+
+        return $this->sendResponse(new UserResource($user), 'Registrasi berhasil', 201);
     }
 
     public function logout(Request $request)

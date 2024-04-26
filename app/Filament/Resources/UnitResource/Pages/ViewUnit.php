@@ -16,7 +16,7 @@ class ViewUnit extends ViewRecord
             Actions\Action::make('owner')
                 ->label('Owner')
                 ->url(route('filament.admin.resources.tenants.view', ['record' => $this->getRecord()->user_id]))
-                ->color('info'),
+                ->color('warning'),
             Actions\EditAction::make(),
         ];
     }

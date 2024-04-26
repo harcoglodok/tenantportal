@@ -19,7 +19,7 @@ class CreateUsersTable extends Migration
             $table->string('device_token')->nullable();
             $table->string('email')->unique();
             $table->date('birthdate')->nullable();
-            $table->date('avatar')->nullable();
+            $table->string('avatar')->nullable();
             $table->timestamp('verified_at')->nullable();
             $table->foreignId('verified_by')->nullable()->constrained('users', 'id');
             $table->timestamp('blocked_at')->nullable();

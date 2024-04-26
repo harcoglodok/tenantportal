@@ -41,6 +41,7 @@ Route::prefix('v1')->group(function () {
     });
     Route::middleware('guest')->group(function () {
         Route::post('auth/login', [AuthAPIController::class, 'login']);
+        Route::post('auth/register', [AuthAPIController::class, 'register']);
     });
     Route::prefix('master')->group(function () {
         Route::apiResource('banners', BannerAPIController::class);

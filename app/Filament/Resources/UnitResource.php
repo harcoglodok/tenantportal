@@ -14,7 +14,6 @@ use Filament\Infolists\Components\Section;
 use Filament\Infolists\Components\TextEntry;
 use App\Filament\Resources\UnitResource\Pages;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
-use App\Filament\Resources\UnitResource\RelationManagers;
 use App\Filament\Resources\UnitResource\RelationManagers\BillingsRelationManager;
 
 class UnitResource extends Resource

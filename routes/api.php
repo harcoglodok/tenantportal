@@ -5,7 +5,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\API\v1\AuthAPIController;
 use App\Http\Controllers\API\v1\CronAPIController;
 use App\Http\Controllers\API\v1\UnitAPIController;
-use App\Http\Controllers\api\v1\UserAPIController;
+use App\Http\Controllers\API\v1\UserAPIController;
 use App\Http\Controllers\API\v1\BannerAPIController;
 use App\Http\Controllers\API\v1\BillingAPIController;
 use App\Http\Controllers\API\v1\MessageAPIController;

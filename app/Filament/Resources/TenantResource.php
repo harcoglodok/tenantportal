@@ -89,6 +89,9 @@ class TenantResource extends Resource
                 Tables\Columns\TextColumn::make('units_count')
                     ->counts('units')
                     ->label('Total Unit'),
+                Tables\Columns\TextColumn::make('created_at')
+                    ->datetime()
+                    ->label('Register Date'),
             ])
             ->filters([
                 //
@@ -160,7 +163,8 @@ class TenantResource extends Resource
                 // Tables\Actions\BulkActionGroup::make([
                 //     Tables\Actions\DeleteBulkAction::make(),
                 // ]),
-            ]);
+            ])
+            ->defaultSort('created_at', 'desc');
     }
 
     public static function infolist(Infolist $infolist): Infolist

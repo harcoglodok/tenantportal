@@ -96,6 +96,32 @@ class AuthAPIController extends AppBaseController
         return $this->sendResponse(new UserResource($user), 'Registrasi berhasil', 201);
     }
 
+    public function forgotPassword(Request $request)
+    {
+        if ($request->email) {
+            $user = User::where('email', $request->email)->first();
+            if ($user) {
+                $token = app('auth.password.broker')->createToken($user);
+                $notification = new \Filament\Notifications\Auth\ResetPassword($token);
+                $notification->url = \Filament\Facades\Filament::getResetPasswordUrl($token, $user);
+                $user->notify($notification);
+
+                $admins = User::whereIn('role', ['root', 'admin'])->get();
+                if ($admins) {
+                    Notification::make()
+                        ->title('Email ' . $request->email . ' melakukan request perubahan password!')
+                        ->sendToDatabase($admins);
+                }
+
+                return $this->sendSuccess('Reset password berhasil dikirimkan ke email Anda!');
+            }
+        } else {
+            return $this->sendError('Silahkan masukkan email Anda!');
+        }
+
+        return $this->sendError('User tidak dtemukan!');
+    }
+
     public function logout(Request $request)
     {
         $request->user()->tokens()->delete();

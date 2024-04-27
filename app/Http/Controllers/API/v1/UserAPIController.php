@@ -46,7 +46,7 @@ class UserAPIController extends AppBaseController
         $user = Auth::user();
         if ($request->email) {
             $checkUserEmail = User::where('email', $request->email)->where('id', '!=', $user->id)->first();
-            if($checkUserEmail){
+            if ($checkUserEmail) {
                 return $this->sendError('Email sudah digunakan');
             }
         }

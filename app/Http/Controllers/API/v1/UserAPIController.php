@@ -6,7 +6,6 @@ use App\Models\User;
 use Illuminate\Http\Request;
 use App\Http\Resources\UserResource;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Hash;
 use Filament\Notifications\Notification;
 use Illuminate\Support\Facades\Validator;
 use App\Http\Controllers\AppBaseController;
@@ -26,7 +25,7 @@ class UserAPIController extends AppBaseController
         /** @var User $user */
         $user = Auth::user();
         $user->update([
-            'password' => Hash::make($request->new_password),
+            'password' => bcrypt($request->new_password),
         ]);
 
         $user = User::find($user->id);
@@ -43,6 +42,7 @@ class UserAPIController extends AppBaseController
 
     public function update(Request $request)
     {
+        dd($request->all());
         /** @var User $user */
         $user = Auth::user();
         if ($request->email) {

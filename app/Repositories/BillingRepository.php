@@ -20,7 +20,7 @@ class BillingRepository extends BaseRepository
         'inv_no',
         'month',
         'year',
-        'tenant_id',
+        'unit_id',
         's4_mbase_amt',
         's4_mtax_amt',
         'sd_mbase_amt',

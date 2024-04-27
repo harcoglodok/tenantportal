@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers\api\v1;
+namespace App\Http\Controllers\API\v1;
 
 use App\Models\User;
 use Illuminate\Http\Request;
@@ -42,7 +42,6 @@ class UserAPIController extends AppBaseController
 
     public function update(Request $request)
     {
-        dd($request->all());
         /** @var User $user */
         $user = Auth::user();
         if ($request->email) {

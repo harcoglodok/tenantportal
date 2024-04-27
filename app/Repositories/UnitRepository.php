@@ -21,7 +21,8 @@ class UnitRepository extends BaseRepository
         'name',
         'phone',
         'email',
-        'number'
+        'number',
+        'user_id',
     ];
 
     /**

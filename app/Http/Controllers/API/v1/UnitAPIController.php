@@ -35,7 +35,7 @@ class UnitAPIController extends AppBaseController
      */
     public function index(Request $request)
     {
-        $request->merge(['user_id'=>auth()->user()->id]);
+        $request->merge(['user_id' => auth()->user()->id]);
         $tenants = $this->tenantRepository->all(
             $request->except(['skip', 'limit']),
             $request->get('skip'),

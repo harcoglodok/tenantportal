@@ -124,7 +124,7 @@ class ComplaintAPIController extends AppBaseController
         if (empty($complaint)) {
             return $this->sendError('Complaint not found');
         }
-
+dd($input);
         $complaint = $this->complaintRepository->update($input, $id);
 
         return $this->sendResponse(new ComplaintResource($complaint), 'Complaint updated successfully');

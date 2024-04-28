@@ -60,8 +60,18 @@ class ComplaintAPIController extends AppBaseController
      */
     public function store(CreateComplaintAPIRequest $request)
     {
-        $request->merge(['created_by' => auth()->user()->id, 'updated_by' => auth()->user()->id]);
+        $request->merge([
+            'created_by' => auth()->user()->id,
+            'updated_by' => auth()->user()->id,
+            'status' => 'waiting',
+        ]);
         $input = $request->all();
+
+        if ($request->hasFile('image')) {
+            $image = $request->file('image');
+            $imagePath = $this->fileUpload('complaints', $image);
+            $input['photo'] = $imagePath;
+        }
 
         $complaint = $this->complaintRepository->create($input);
 

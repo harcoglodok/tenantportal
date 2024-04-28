@@ -35,14 +35,15 @@ class MessageAPIController extends AppBaseController
      */
     public function index(Request $request)
     {
-        $messages = $this->messageRepository->all(
-            $request->except(['skip', 'limit']),
-            $request->get('skip'),
-            $request->get('limit'),
-            ['*'],
-            $request->get('sort_by'),
-            $request->get('sort_direction', 'asc'),
-        );
+        $user = auth()->user();
+        $messages = Message::where(function ($query) use ($user) {
+            $query->whereHas('tenants', function ($subquery) use ($user) {
+                $subquery->where('user_id', $user->id);
+            })
+            ->orWhereDoesntHave('tenants');
+        })
+        ->orderBy('created_at','desc')
+        ->get();
 
         return $this->sendResponse(MessageResource::collection($messages), 'Messages retrieved successfully');
     }

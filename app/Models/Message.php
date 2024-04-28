@@ -92,4 +92,21 @@ class Message extends Model
     {
         return $this->belongsToMany(User::class, 'user_message', 'message_id', 'user_id');
     }
+
+    /**
+     * The reads that belong to the Message
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
+     */
+    public function reads(): BelongsToMany
+    {
+        return $this->belongsToMany(ReadMessage::class, 'read_message', 'message_id');
+    }
+
+    public function readByUser()
+    {
+        return $this->belongsToMany(User::class, 'read_messages')
+            ->withPivot('message_id')
+            ->wherePivot('user_id', auth()->user()->id);
+    }
 }

@@ -2,14 +2,15 @@
 
 namespace App\Http\Controllers\API\v1;
 
+use Response;
+use App\Models\Message;
+use App\Models\ReadMessage;
+use Illuminate\Http\Request;
+use App\Http\Resources\MessageResource;
+use App\Repositories\MessageRepository;
+use App\Http\Controllers\AppBaseController;
 use App\Http\Requests\API\CreateMessageAPIRequest;
 use App\Http\Requests\API\UpdateMessageAPIRequest;
-use App\Models\Message;
-use App\Repositories\MessageRepository;
-use Illuminate\Http\Request;
-use App\Http\Controllers\AppBaseController;
-use App\Http\Resources\MessageResource;
-use Response;
 
 /**
  * Class MessageController
@@ -36,14 +37,15 @@ class MessageAPIController extends AppBaseController
     public function index(Request $request)
     {
         $user = auth()->user();
-        $messages = Message::where(function ($query) use ($user) {
-            $query->whereHas('tenants', function ($subquery) use ($user) {
-                $subquery->where('user_id', $user->id);
+        $messages = Message::with(['readByUser'])
+            ->where(function ($query) use ($user) {
+                $query->whereHas('tenants', function ($subquery) use ($user) {
+                    $subquery->where('user_id', $user->id);
+                })
+                    ->orWhereDoesntHave('tenants');
             })
-            ->orWhereDoesntHave('tenants');
-        })
-        ->orderBy('created_at','desc')
-        ->get();
+            ->orderBy('created_at', 'desc')
+            ->get();
 
         return $this->sendResponse(MessageResource::collection($messages), 'Messages retrieved successfully');
     }
@@ -132,5 +134,39 @@ class MessageAPIController extends AppBaseController
         $message->delete();
 
         return $this->sendSuccess('Message deleted successfully');
+    }
+
+    public function read($id)
+    {
+        /** @var Message $message */
+        $message = $this->messageRepository->find($id);
+
+        if (empty($message)) {
+            return $this->sendError('Message not found');
+        }
+
+        ReadMessage::create([
+            'message_id' => $message->id,
+            'user_id' => auth()->user()->id,
+        ]);
+
+        return $this->sendSuccess('Message read successfully');
+    }
+
+    public function unreadCount()
+    {
+        $user = auth()->user();
+        $messages = Message::with(['readByUser'])
+            ->where(function ($query) use ($user) {
+                $query->whereHas('tenants', function ($subquery) use ($user) {
+                    $subquery->where('user_id', $user->id);
+                })
+                    ->orWhereDoesntHave('tenants');
+            })
+            ->whereDoesntHave('readByUser')
+            ->orderBy('created_at', 'desc')
+            ->get();
+
+        return $this->sendResponse($messages->count(),'Message unread');
     }
 }

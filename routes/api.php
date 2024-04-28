@@ -36,6 +36,8 @@ Route::prefix('v1')->group(function () {
             Route::apiResource('complaints', ComplaintAPIController::class);
             Route::apiResource('complaint_replies', ComplaintReplyAPIController::class);
             Route::apiResource('messages', MessageAPIController::class);
+            Route::post('messages-read/{id}', [MessageAPIController::class, 'read']);
+            Route::get('messages-unread', [MessageAPIController::class, 'unreadCount']);
             Route::apiResource('billings', BillingAPIController::class);
             Route::apiResource('billing_transactions', BillingTransactionAPIController::class);
         });

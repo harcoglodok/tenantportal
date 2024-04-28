@@ -4,6 +4,7 @@ namespace App\Http\Controllers\API\v1;
 
 use Response;
 use App\Models\User;
+use App\Models\Complaint;
 use Illuminate\Http\Request;
 use App\Models\ComplaintReply;
 use Filament\Notifications\Notification;
@@ -113,6 +114,9 @@ class ComplaintReplyAPIController extends AppBaseController
         }
 
         $complaintReply = $this->complaintReplyRepository->update($input, $id);
+
+        $complaint = Complaint::find($complaintReply->complaint_id);
+        $complaint->update(['status' => 'waiting']);
 
         return $this->sendResponse(new ComplaintReplyResource($complaintReply), 'ComplaintReply updated successfully');
     }

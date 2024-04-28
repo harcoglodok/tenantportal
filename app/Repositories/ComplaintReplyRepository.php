@@ -17,7 +17,8 @@ class ComplaintReplyRepository extends BaseRepository
      * @var array
      */
     protected $fieldSearchable = [
-        'reply'
+        'complaint_id',
+        'reply',
     ];
 
     /**

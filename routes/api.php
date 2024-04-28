@@ -13,6 +13,7 @@ use App\Http\Controllers\API\v1\ComplaintAPIController;
 use App\Http\Controllers\API\v1\ComplaintReplyAPIController;
 use App\Http\Controllers\API\v1\ComplaintCategoryAPIController;
 use App\Http\Controllers\API\v1\BillingTransactionAPIController;
+use App\Http\Controllers\API\v1\NotificationCategoryAPIController;
 
 /*
 |--------------------------------------------------------------------------
@@ -47,6 +48,7 @@ Route::prefix('v1')->group(function () {
     Route::prefix('master')->group(function () {
         Route::apiResource('banners', BannerAPIController::class);
         Route::apiResource('complaint_categories', ComplaintCategoryAPIController::class);
+        Route::apiResource('notification_categories', NotificationCategoryAPIController::class);
     });
     Route::prefix('cron')->group(function () {
         Route::get('scheduled_notification', [CronAPIController::class, 'scheduledNotification']);

@@ -18,7 +18,7 @@ class CreateComplaintsTable extends Migration
             $table->id();
             $table->string('title');
             $table->text('content');
-            $table->string('photo', 50);
+            $table->string('photo', 255);
             $table->enum('status', ['waiting','replied','done']);
             $table->foreignId('created_by')->constrained('users', 'id')->onDelete('cascade');
             $table->foreignId('updated_by')->constrained('users', 'id')->onDelete('cascade');

@@ -21,6 +21,7 @@ class ComplaintResource extends JsonResource
             'category_name' => $this->category->title,
             'title' => $this->title,
             'content' => $this->content,
+            'status' => $this->status,
             'photo' => $this->photo,
             'created_by' => $this->createdBy->name,
             'updated_by' => $this->updatedBy->name,

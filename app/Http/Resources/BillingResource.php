@@ -17,6 +17,7 @@ class BillingResource extends JsonResource
         return [
             'id' => $this->id,
             'inv_no' => $this->inv_no,
+            'unit_no' => $this->unit->no_unit,
             'month' => $this->month,
             'year' => $this->year,
             'unit_id' => $this->unit_id,

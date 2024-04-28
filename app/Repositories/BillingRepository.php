@@ -17,6 +17,7 @@ class BillingRepository extends BaseRepository
      * @var array
      */
     protected $fieldSearchable = [
+        'unit.user.id',
         'inv_no',
         'month',
         'year',

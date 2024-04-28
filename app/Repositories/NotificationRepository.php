@@ -3,6 +3,7 @@
 namespace App\Repositories;
 
 use App\Models\Notification;
+use App\Models\ScheduledNotification;
 use App\Repositories\BaseRepository;
 
 /**
@@ -39,6 +40,22 @@ class NotificationRepository extends BaseRepository
      **/
     public function model()
     {
-        return Notification::class;
+        return ScheduledNotification::class;
     }
+
+    /**
+     * @var array
+     */
+    protected $relations = [];
+
+    /**
+     * Return relations
+     *
+     * @return array
+     */
+    public function getRelations()
+    {
+        return $this->relations;
+    }
+
 }

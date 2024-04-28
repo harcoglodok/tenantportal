@@ -55,6 +55,13 @@ class BillingRepository extends BaseRepository
     ];
 
     /**
+     * @var array
+     */
+    protected $relations = [
+        'unit'
+    ];
+
+    /**
      * Return searchable fields
      *
      * @return array
@@ -62,6 +69,16 @@ class BillingRepository extends BaseRepository
     public function getFieldsSearchable()
     {
         return $this->fieldSearchable;
+    }
+
+    /**
+     * Return relations
+     *
+     * @return array
+     */
+    public function getRelations()
+    {
+        return $this->relations;
     }
 
     /**

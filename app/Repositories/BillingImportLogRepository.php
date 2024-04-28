@@ -38,4 +38,20 @@ class BillingImportLogRepository extends BaseRepository
     {
         return BillingImportLog::class;
     }
+
+    /**
+     * @var array
+     */
+    protected $relations = [];
+
+    /**
+     * Return relations
+     *
+     * @return array
+     */
+    public function getRelations()
+    {
+        return $this->relations;
+    }
+
 }

@@ -39,4 +39,20 @@ class BannerRepository extends BaseRepository
     {
         return Banner::class;
     }
+
+    /**
+     * @var array
+     */
+    protected $relations = [];
+
+    /**
+     * Return relations
+     *
+     * @return array
+     */
+    public function getRelations()
+    {
+        return $this->relations;
+    }
+
 }

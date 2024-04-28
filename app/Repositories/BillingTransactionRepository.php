@@ -41,4 +41,20 @@ class BillingTransactionRepository extends BaseRepository
     {
         return BillingTransaction::class;
     }
+
+    /**
+     * @var array
+     */
+    protected $relations = [];
+
+    /**
+     * Return relations
+     *
+     * @return array
+     */
+    public function getRelations()
+    {
+        return $this->relations;
+    }
+
 }

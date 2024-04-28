@@ -41,4 +41,20 @@ class MessageRepository extends BaseRepository
     {
         return Message::class;
     }
+
+    /**
+     * @var array
+     */
+    protected $relations = [];
+
+    /**
+     * Return relations
+     *
+     * @return array
+     */
+    public function getRelations()
+    {
+        return $this->relations;
+    }
+
 }

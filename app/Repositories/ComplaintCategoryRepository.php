@@ -37,4 +37,20 @@ class ComplaintCategoryRepository extends BaseRepository
     {
         return ComplaintCategory::class;
     }
+
+    /**
+     * @var array
+     */
+    protected $relations = [];
+
+    /**
+     * Return relations
+     *
+     * @return array
+     */
+    public function getRelations()
+    {
+        return $this->relations;
+    }
+
 }

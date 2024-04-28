@@ -37,6 +37,13 @@ abstract class BaseRepository
     abstract public function getFieldsSearchable();
 
     /**
+     * Get relations array
+     *
+     * @return array
+     */
+    abstract public function getRelations();
+
+    /**
      * Configure the Model
      *
      * @return string
@@ -86,6 +93,7 @@ abstract class BaseRepository
     public function allQuery($search = [], $skip = null, $limit = null, $sortBy = null, $sortDirection = 'asc')
     {
         $query = $this->model->newQuery();
+        $query->with($this->getRelations());
 
         if (count($search)) {
             foreach ($search as $key => $value) {

@@ -40,8 +40,8 @@ class BillingAPIController extends AppBaseController
             $request->get('skip'),
             $request->get('limit'),
             ['*'],
-            $request->get('sortBy'),
-            $request->get('sortDirection', 'asc'),
+            $request->get('sort_by'),
+            $request->get('sort_direction', 'asc'),
         );
 
         return $this->sendResponse(BillingResource::collection($billings), 'Billings retrieved successfully');

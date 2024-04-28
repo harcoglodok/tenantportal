@@ -41,8 +41,8 @@ class UnitAPIController extends AppBaseController
             $request->get('skip'),
             $request->get('limit'),
             ['*'],
-            $request->get('sortBy'),
-            $request->get('sortDirection', 'asc'),
+            $request->get('sort_by'),
+            $request->get('sort_direction', 'asc'),
         );
 
         return $this->sendResponse(UnitResource::collection($tenants), 'Units retrieved successfully');

@@ -64,6 +64,9 @@ class ComplaintReplyAPIController extends AppBaseController
 
         $complaintReply = $this->complaintReplyRepository->create($input);
 
+        $complaint = Complaint::find($complaintReply->complaint_id);
+        $complaint->update(['status' => 'waiting']);
+
         $admins = User::whereIn('role', ['root', 'admin'])->get();
         if ($admins) {
             Notification::make()
@@ -114,9 +117,6 @@ class ComplaintReplyAPIController extends AppBaseController
         }
 
         $complaintReply = $this->complaintReplyRepository->update($input, $id);
-
-        $complaint = Complaint::find($complaintReply->complaint_id);
-        $complaint->update(['status' => 'waiting']);
 
         return $this->sendResponse(new ComplaintReplyResource($complaintReply), 'ComplaintReply updated successfully');
     }

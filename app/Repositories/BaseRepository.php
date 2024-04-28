@@ -93,12 +93,20 @@ abstract class BaseRepository
     public function allQuery($search = [], $skip = null, $limit = null, $sortBy = null, $sortDirection = 'asc')
     {
         $query = $this->model->newQuery();
-        $query->with($this->getRelations());
+
+        // $query->with($this->getRelations());
 
         if (count($search)) {
             foreach ($search as $key => $value) {
                 if (in_array($key, $this->getFieldsSearchable())) {
-                    $query->where($key, $value);
+                    $queryData = explode('', $key);
+                    if (count($queryData) > 1) {
+                        $query->whereHas($queryData[0], function ($query) use ($queryData, $value) {
+                            $query->where($queryData[1], $value);
+                        });
+                    } else {
+                        $query->where($key, $value);
+                    }
                 }
             }
         }

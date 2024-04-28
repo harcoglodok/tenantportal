@@ -38,7 +38,10 @@ class MessageAPIController extends AppBaseController
         $messages = $this->messageRepository->all(
             $request->except(['skip', 'limit']),
             $request->get('skip'),
-            $request->get('limit')
+            $request->get('limit'),
+            ['*'],
+            $request->get('sortBy'),
+            $request->get('sortDirection', 'asc'),
         );
 
         return $this->sendResponse(MessageResource::collection($messages), 'Messages retrieved successfully');

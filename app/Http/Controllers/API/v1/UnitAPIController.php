@@ -39,7 +39,10 @@ class UnitAPIController extends AppBaseController
         $tenants = $this->tenantRepository->all(
             $request->except(['skip', 'limit']),
             $request->get('skip'),
-            $request->get('limit')
+            $request->get('limit'),
+            ['*'],
+            $request->get('sortBy'),
+            $request->get('sortDirection', 'asc'),
         );
 
         return $this->sendResponse(UnitResource::collection($tenants), 'Units retrieved successfully');

@@ -40,7 +40,10 @@ class ComplaintReplyAPIController extends AppBaseController
         $complaintReplies = $this->complaintReplyRepository->all(
             $request->except(['skip', 'limit']),
             $request->get('skip'),
-            $request->get('limit')
+            $request->get('limit'),
+            ['*'],
+            $request->get('sortBy'),
+            $request->get('sortDirection', 'asc'),
         );
 
         return $this->sendResponse(ComplaintReplyResource::collection($complaintReplies), 'Complaint Replies retrieved successfully');

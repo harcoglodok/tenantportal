@@ -83,12 +83,12 @@ abstract class BaseRepository
      * @param int|null $limit
      * @return \Illuminate\Database\Eloquent\Builder
      */
-    public function allQuery($search = [], $skip = null, $limit = null)
+    public function allQuery($search = [], $skip = null, $limit = null, $sortBy = null, $sortDirection = 'asc')
     {
         $query = $this->model->newQuery();
 
         if (count($search)) {
-            foreach($search as $key => $value) {
+            foreach ($search as $key => $value) {
                 if (in_array($key, $this->getFieldsSearchable())) {
                     $query->where($key, $value);
                 }
@@ -101,6 +101,10 @@ abstract class BaseRepository
 
         if (!is_null($limit)) {
             $query->limit($limit);
+        }
+
+        if (!is_null($sortBy)) {
+            $query->orderBy($sortBy, $sortDirection);
         }
 
         return $query;
@@ -116,9 +120,9 @@ abstract class BaseRepository
      *
      * @return \Illuminate\Contracts\Pagination\LengthAwarePaginator|\Illuminate\Database\Eloquent\Builder[]|\Illuminate\Database\Eloquent\Collection
      */
-    public function all($search = [], $skip = null, $limit = null, $columns = ['*'])
+    public function all($search = [], $skip = null, $limit = null, $columns = ['*'], $sortBy = null, $sortDirection = 'asc')
     {
-        $query = $this->allQuery($search, $skip, $limit);
+        $query = $this->allQuery($search, $skip, $limit, $sortBy, $sortDirection);
 
         return $query->get($columns);
     }

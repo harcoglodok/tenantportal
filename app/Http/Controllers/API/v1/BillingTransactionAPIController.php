@@ -38,7 +38,10 @@ class BillingTransactionAPIController extends AppBaseController
         $billingTransactions = $this->billingTransactionRepository->all(
             $request->except(['skip', 'limit']),
             $request->get('skip'),
-            $request->get('limit')
+            $request->get('limit'),
+            ['*'],
+            $request->get('sortBy'),
+            $request->get('sortDirection', 'asc'),
         );
 
         return $this->sendResponse(BillingTransactionResource::collection($billingTransactions), 'Billing Transactions retrieved successfully');

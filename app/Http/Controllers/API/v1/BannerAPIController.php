@@ -38,7 +38,10 @@ class BannerAPIController extends AppBaseController
         $banners = $this->bannerRepository->all(
             $request->except(['skip', 'limit']),
             $request->get('skip'),
-            $request->get('limit')
+            $request->get('limit'),
+            ['*'],
+            $request->get('sortBy'),
+            $request->get('sortDirection', 'asc'),
         );
 
         return $this->sendResponse(BannerResource::collection($banners), 'Banners retrieved successfully');

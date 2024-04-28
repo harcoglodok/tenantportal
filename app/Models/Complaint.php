@@ -60,12 +60,7 @@ class Complaint extends Model
      *
      * @var array
      */
-    public static $rules = [
-        'category_id' => 'required',
-        'content' => 'required',
-        'status' => 'required',
-        'photo' => 'image|mimes:jpeg,png,jpg,gif|max:8192'
-    ];
+    public static $rules = [];
 
     /**
      * Get the category that owns the Complaint

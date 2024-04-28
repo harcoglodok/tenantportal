@@ -94,12 +94,12 @@ abstract class BaseRepository
     {
         $query = $this->model->newQuery();
 
-        // $query->with($this->getRelations());
+        $query->with($this->getRelations());
 
         if (count($search)) {
             foreach ($search as $key => $value) {
                 if (in_array($key, $this->getFieldsSearchable())) {
-                    $queryData = explode('.', $key);
+                    $queryData = explode('-', $key);
                     if (count($queryData) > 1) {
                         $query->whereHas($queryData[0], function ($query) use ($queryData, $value) {
                             $query->where($queryData[1], $value);

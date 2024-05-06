@@ -20,7 +20,7 @@ class CreateMessage extends CreateRecord
         $users = UserMessage::where('message_id', $storedDataId)->get();
         $deviceTokens = [];
         foreach ($users as $user) {
-            if($user->device_token != null){
+            if ($user->device_token != null) {
                 $deviceTokens[] = $user->device_token;
             }
         }
@@ -28,14 +28,14 @@ class CreateMessage extends CreateRecord
             $this->sendPushNotificationMultiple(
                 $deviceTokens,
                 $this->record->title,
-                'Open Notif',
+                '',
                 ['id' => $storedDataId],
             );
         } else {
             $this->sendPushNotificationTopic(
                 'global_message',
                 $this->record->title,
-                'Open Notif',
+                '',
                 ['id' => $storedDataId],
             );
         }

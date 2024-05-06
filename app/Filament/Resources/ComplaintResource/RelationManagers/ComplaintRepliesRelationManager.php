@@ -3,15 +3,17 @@
 namespace App\Filament\Resources\ComplaintResource\RelationManagers;
 
 use Filament\Forms;
-use Filament\Forms\Form;
-use Filament\Resources\RelationManagers\RelationManager;
 use Filament\Tables;
+use Filament\Forms\Form;
 use Filament\Tables\Table;
+use App\Traits\PushNotification;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
+use Filament\Resources\RelationManagers\RelationManager;
 
 class ComplaintRepliesRelationManager extends RelationManager
 {
+    use PushNotification;
     protected static string $relationship = 'replies';
 
     public function form(Form $form): Form
@@ -43,10 +45,14 @@ class ComplaintRepliesRelationManager extends RelationManager
                         $data['user_id'] = auth()->id();
                         return $data;
                     })
-                    ->after(function () {
+                    ->after(function ($record) {
+                        $user = $this->getOwnerRecord()->createdBy;
+                        if ($user->device_token) {
+                            $this->sendPushNotification($user->device_token, 'Balasan Kritik/Saran', $record->reply);
+                        }
                         $this->getOwnerRecord()->update([
-                            'updated_by'=> auth()->id(),
-                            'status'=> 'replied',
+                            'updated_by' => auth()->id(),
+                            'status' => 'replied',
                         ]);
                     }),
             ])

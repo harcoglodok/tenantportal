@@ -39,13 +39,11 @@ class UnitResource extends Resource
                     Forms\Components\TextInput::make('name')
                         ->maxLength(255),
                     Forms\Components\TextInput::make('phone')
-                        ->tel()
                         ->maxLength(255),
                     Forms\Components\TextInput::make('email')
-                        ->email()
                         ->maxLength(255),
-                    Forms\Components\TextInput::make('number')
-                        ->maxLength(255),
+                    // Forms\Components\TextInput::make('number')
+                    //     ->maxLength(255),
                     Forms\Components\Select::make('user_id')
                         ->relationship('user', 'name', function (Builder $query) {
                             $query->where('role', 'tenant');
@@ -73,9 +71,13 @@ class UnitResource extends Resource
                     ->searchable(),
                 Tables\Columns\TextColumn::make('phone')
                     ->default('-')
+                    ->badge()
+                    ->separator(';')
                     ->searchable(),
                 Tables\Columns\TextColumn::make('email')
                     ->default('-')
+                    ->badge()
+                    ->separator(';')
                     ->searchable(),
                 Tables\Columns\TextColumn::make('created_at')
                     ->dateTime()
@@ -124,10 +126,14 @@ class UnitResource extends Resource
                             ->default('-'),
                         TextEntry::make('business_id')
                             ->default('-')
-                            ->label('Owner'),
+                            ->label('Business ID'),
                         TextEntry::make('email')
+                            ->badge()
+                            ->separator(';')
                             ->default('-'),
                         TextEntry::make('phone')
+                            ->badge()
+                            ->separator(';')
                             ->default('-'),
                     ])->columns(3),
             ]);

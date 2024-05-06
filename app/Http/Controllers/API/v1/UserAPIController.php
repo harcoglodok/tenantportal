@@ -68,4 +68,14 @@ class UserAPIController extends AppBaseController
         }
         return $this->sendResponse(new UserResource($user), 'Update user successfully');
     }
+
+    public function updateFirebaseToken(Request $request)
+    {
+        /** @var User $user */
+        $user = Auth::user();
+        $user->update([
+            'device_token' => $request->device_token ?? $user->device_token,
+        ]);
+        return $this->sendResponse(new UserResource($user), 'Update user successfully');
+    }
 }

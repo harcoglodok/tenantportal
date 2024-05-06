@@ -32,6 +32,7 @@ Route::prefix('v1')->group(function () {
         Route::prefix('user')->group(function () {
             Route::post('update', [UserAPIController::class, 'update']);
             Route::post('update-password', [UserAPIController::class, 'updatePassword']);
+            Route::post('update-token', [UserAPIController::class, 'updateFirebaseToken']);
             Route::apiResource('units', UnitAPIController::class);
             Route::apiResource('complaints', ComplaintAPIController::class);
             Route::apiResource('complaint_replies', ComplaintReplyAPIController::class);

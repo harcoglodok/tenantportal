@@ -21,7 +21,7 @@ class CreateBillingTransactionsTable extends Migration
             $table->string('image');
             $table->enum('status', ['pending', 'approved', 'declined'])->default('pending');
             $table->foreignId('verified_by')->nullable()->constrained('users', 'id');
-            $table->string('message');
+            $table->string('message')->nullable();
             $table->timestamps();
             $table->softDeletes();
         });

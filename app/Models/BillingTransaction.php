@@ -56,9 +56,7 @@ class BillingTransaction extends Model
      */
     public static $rules = [
         'billing_id' => 'required',
-        'user_id' => 'required',
-        'image' => 'required|image|mimes:jpeg,png,jpg,gif|max:8192',
-        'status' => 'required'
+        'image' => 'required|image|mimes:jpeg,png,jpg,gif|max:8192'
     ];
 
     /**

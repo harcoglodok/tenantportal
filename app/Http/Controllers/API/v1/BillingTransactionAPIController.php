@@ -2,14 +2,17 @@
 
 namespace App\Http\Controllers\API\v1;
 
-use App\Http\Requests\API\CreateBillingTransactionAPIRequest;
-use App\Http\Requests\API\UpdateBillingTransactionAPIRequest;
-use App\Models\BillingTransaction;
-use App\Repositories\BillingTransactionRepository;
+use Response;
+use App\Models\User;
 use Illuminate\Http\Request;
+use App\Models\BillingTransaction;
+use Illuminate\Support\Facades\Auth;
+use Filament\Notifications\Notification;
 use App\Http\Controllers\AppBaseController;
 use App\Http\Resources\BillingTransactionResource;
-use Response;
+use App\Repositories\BillingTransactionRepository;
+use App\Http\Requests\API\CreateBillingTransactionAPIRequest;
+use App\Http\Requests\API\UpdateBillingTransactionAPIRequest;
 
 /**
  * Class BillingTransactionController
@@ -57,10 +60,27 @@ class BillingTransactionAPIController extends AppBaseController
      */
     public function store(CreateBillingTransactionAPIRequest $request)
     {
+        /** @var User $user */
+        $user = Auth::user();
+        $request->merge([
+            'user_id' => $user->id,
+            'status' => 'pending',
+            'message' => 'pending',
+        ]);
         $input = $request->all();
+        if ($request->hasFile('image')) {
+            $image = $request->file('image');
+            $imagePath = $this->fileUpload('transactions', $image);
+            $input['image'] = $imagePath;
+        }
 
         $billingTransaction = $this->billingTransactionRepository->create($input);
-
+        $admins = User::whereIn('role', ['root', 'admin'])->get();
+        if ($admins) {
+            Notification::make()
+                ->title('User ' . $user->name . ' melakukan update data')
+                ->sendToDatabase($admins);
+        }
         return $this->sendResponse(new BillingTransactionResource($billingTransaction), 'Billing Transaction saved successfully');
     }
 

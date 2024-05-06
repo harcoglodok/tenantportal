@@ -60,7 +60,7 @@ class TenantResource extends Resource
                         ->password()
                         ->required()
                         ->maxLength(255)
-                        ->hiddenOn(['view', 'edit']),
+                        ->hiddenOn(['view']),
                 ])->columns(2)
             ]);
     }

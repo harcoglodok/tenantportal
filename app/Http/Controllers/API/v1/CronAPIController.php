@@ -35,8 +35,8 @@ class CronAPIController extends AppBaseController
             if ($user->device_token != null) {
                 $this->sendPushNotification(
                     $user->device_token,
-                    'Selamat ulang tahun ' . $user->name,
-                    'Selamat ulang tahun dan sehat selalu',
+                    $user->name . ' Ulang Tahun Hari Ini',
+                    'Selamat Ulang Tahun. Semoga sukses & bahagia',
                 );
             }
         }

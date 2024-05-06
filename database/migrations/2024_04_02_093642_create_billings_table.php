@@ -19,7 +19,8 @@ class CreateBillingsTable extends Migration
             $table->string('inv_no');
             $table->string('month');
             $table->string('year');
-            $table->foreignId('unit_id')->constrained()->onDelete('cascade');
+            $table->string('unit_no');
+            $table->string('name')->nullable();
             $table->double('s4_mbase_amt')->default(0);
             $table->double('s4_mtax_amt')->default(0);
             $table->double('sd_mbase_amt')->default(0);
@@ -29,10 +30,11 @@ class CreateBillingsTable extends Migration
             $table->double('electric_current')->default(0);
             $table->double('electric_read')->default(0);
             $table->double('electric_fixed')->default(0);
+            $table->double('electric_mbase')->default(0);
             $table->double('electric_administration')->default(0);
             $table->double('electric_tax')->default(0);
             $table->double('electric_total')->default(0);
-            $table->double('mcb')->default(0);
+            $table->string('mcb')->default('');
             $table->double('water_previous')->default(0);
             $table->double('water_current')->default(0);
             $table->double('water_read')->default(0);
@@ -50,6 +52,8 @@ class CreateBillingsTable extends Migration
             $table->double('add_charge')->default(0);
             $table->double('previous_transaction')->default(0);
             $table->enum('status', ['unpaid', 'paid'])->default('unpaid');
+            $table->string('created_by')->nullable();
+            $table->string('updated_by')->nullable();
             $table->timestamps();
             $table->softDeletes();
         });

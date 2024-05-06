@@ -2,15 +2,16 @@
 
 namespace App\Filament\Resources\BillingResource\Pages;
 
-use App\Filament\Resources\BillingResource;
+use Filament\Actions\Action;
 use App\Imports\BillingsImport;
 use App\Models\BillingImportLog;
+use App\Imports\OldBillingImport;
 use App\Models\BillingImportLogData;
-use Filament\Actions\Action;
-use Filament\Forms\Components\FileUpload;
-use Filament\Notifications\Notification;
-use Filament\Resources\Pages\ListRecords;
 use Maatwebsite\Excel\Facades\Excel;
+use Filament\Notifications\Notification;
+use Filament\Forms\Components\FileUpload;
+use Filament\Resources\Pages\ListRecords;
+use App\Filament\Resources\BillingResource;
 
 class ListBillings extends ListRecords
 {
@@ -19,6 +20,26 @@ class ListBillings extends ListRecords
     protected function getHeaderActions(): array
     {
         return [
+            // Action::make('importBillingsOld')
+            //     ->label('Import Billings Old')
+            //     ->color('success')
+            //     ->icon('heroicon-m-arrow-up-tray')
+            //     ->form([
+            //         FileUpload::make('import')
+            //             ->directory('imports')
+            //             ->label('Import File'),
+            //     ])
+            //     ->action(function (array $data) {
+            //         $file = public_path("storage/" . $data['import']);
+
+            //         Excel::import(new OldBillingImport, $file);
+
+            //         Notification::make()
+            //             ->success()
+            //             ->title('Billings Imported')
+            //             ->body('Successfully import billings')
+            //             ->send();
+            //     }),
             Action::make('importBillings')
                 ->label('Import Billings')
                 ->color('success')

@@ -35,7 +35,7 @@ class BillingsImport implements ToCollection, WithHeadingRow
                         'email' => trim($row['email_bill']),
                         'handphone' => trim($row['handphone_bill']),
                     ]);
-                    $waterTotal = doubleval(trim($row['wf_mbase_amt']))+doubleval(trim($row['wu_mbase_amt']))+doubleval(trim($row['wa_mbase_amt']))+doubleval(trim($row['wa_mtax_amt']));
+                    $waterTotal = doubleval(trim($row['wf_mbase_amt'])) + doubleval(trim($row['wu_mbase_amt'])) + doubleval(trim($row['wa_mbase_amt'])) + doubleval(trim($row['wa_mtax_amt']));
                     $electricTotal = doubleval(trim($row['eu_mbase_amt']));
                     $sinkFund = doubleval(trim($row['sink_chrg']));
                     $serviceCharge = doubleval(trim($row['serv_chrg']));
@@ -44,7 +44,8 @@ class BillingsImport implements ToCollection, WithHeadingRow
                         'inv_no' => trim($row['doc_no']),
                         'month' => trim($row['fin_month']),
                         'year' => trim($row['fin_year']),
-                        'unit_id' => $unit->id,
+                        'unit_no' => $unit->no_unit,
+                        'name' => trim($row['nama']),
                         's4_mbase_amt' => doubleval(trim($row['s4_mbase_amt'])),
                         's4_mtax_amt' => doubleval(trim($row['s4_mtax_amt'])),
                         'sd_mbase_amt' => doubleval(trim($row['sd_mbase_amt'])),
@@ -54,10 +55,11 @@ class BillingsImport implements ToCollection, WithHeadingRow
                         'electric_current' => doubleval(trim($row['eu_current_read'])),
                         'electric_read' => doubleval(trim($row['eu_read'])),
                         'electric_fixed' => doubleval(trim($row['ef_mbase_amt'])),
+                        'electric_mbase' => doubleval(trim($row['eu_mbase_amt'])),
                         'electric_administration' => doubleval(trim($row['ec_mbase_amt'])),
                         'electric_tax' => doubleval(trim($row['ec_mtax_amt'])),
                         'electric_total' => $electricTotal,
-                        'mcb' => doubleval(trim($row['meter_cd_ef'])),
+                        'mcb' => trim($row['meter_cd_ef']),
                         'water_previous' => doubleval(trim($row['wu_previous_read'])),
                         'water_current' => doubleval(trim($row['wu_current_read'])),
                         'water_read' => doubleval(trim($row['wu_read'])),
@@ -74,7 +76,7 @@ class BillingsImport implements ToCollection, WithHeadingRow
                         'mandiri' => trim($row['va_man']),
                         'add_charge' => doubleval(trim($row['add_charge'])),
                         'previous_transaction' => doubleval(trim($row['previous_transaction'])),
-                        'status' => 'unpaid',
+                        'status' => $row['status'] ?? 'unpaid',
                     ]);
                     BillingImportLogData::create([
                         'billing_import_log_id' => $log->id,

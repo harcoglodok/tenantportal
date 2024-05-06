@@ -72,6 +72,8 @@ class BillingResource extends Resource
                             ->label('Invoice Number'),
                         TextEntry::make('unit.no_unit')
                             ->label('Unit'),
+                        TextEntry::make('name')
+                            ->label('Name'),
                         TextEntry::make('unit.user.name')
                             ->label('Owner'),
                         TextEntry::make('month'),
@@ -100,6 +102,7 @@ class BillingResource extends Resource
                                 TextEntry::make('electric_current')->placeholder('-')->numeric(),
                                 TextEntry::make('electric_read')->placeholder('-')->numeric(),
                                 TextEntry::make('electric_fixed')->placeholder('-')->numeric(),
+                                TextEntry::make('electric_mbase')->placeholder('-')->numeric(),
                                 TextEntry::make('electric_administration')->placeholder('-')->numeric(),
                                 TextEntry::make('electric_tax')->placeholder('-')->numeric(),
                                 TextEntry::make('electric_total')->placeholder('-')->numeric(),

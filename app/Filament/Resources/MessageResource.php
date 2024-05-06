@@ -103,9 +103,9 @@ class MessageResource extends Resource
     {
         return [
             'index' => Pages\ListMessages::route('/'),
-            // 'create' => Pages\CreateMessage::route('/create'),
-            // 'view' => Pages\ViewMessage::route('/{record}'),
-            // 'edit' => Pages\EditMessage::route('/{record}/edit'),
+            'create' => Pages\CreateMessage::route('/create'),
+            'view' => Pages\ViewMessage::route('/{record}'),
+            'edit' => Pages\EditMessage::route('/{record}/edit'),
         ];
     }
 

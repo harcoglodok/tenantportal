@@ -3,16 +3,26 @@
 namespace App\Filament\Resources\MessageResource\Pages;
 
 use Filament\Actions;
+use App\Models\Message;
+use App\Models\UserMessage;
 use App\Traits\PushNotification;
 use Filament\Resources\Pages\CreateRecord;
 use App\Filament\Resources\MessageResource;
-use App\Models\UserMessage;
 
 class CreateMessage extends CreateRecord
 {
     use PushNotification;
 
     protected static string $resource = MessageResource::class;
+
+    protected function handleRecordCreation(array $data): Message
+    {
+        $data['created_by'] = auth()->user()->id;
+        $data['updated_by'] = auth()->user()->id;
+        $record =  static::getModel()::create($data);
+
+        return $record;
+    }
 
     protected function afterCreate(): void
     {

@@ -32,6 +32,7 @@ class Unit extends Model
 
 
     public $fillable = [
+        'id',
         'no_unit',
         'business_id',
         'name',
@@ -85,6 +86,6 @@ class Unit extends Model
      */
     public function billings(): HasMany
     {
-        return $this->hasMany(Billing::class);
+        return $this->hasMany(Billing::class, 'unit_no', 'no_unit');
     }
 }

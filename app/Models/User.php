@@ -25,6 +25,7 @@ class User extends Authenticatable implements FilamentUser
         "device_token",
         "email",
         "avatar",
+        "religion",
         "birthdate",
         "verified_at",
         "verified_by",

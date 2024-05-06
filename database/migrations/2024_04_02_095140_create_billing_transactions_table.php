@@ -16,7 +16,7 @@ class CreateBillingTransactionsTable extends Migration
     {
         Schema::create('billing_transactions', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('billing_id')->constrained()->onDelete('cascade');
+            $table->bigInteger('billing_id');
             $table->foreignId('user_id')->constrained()->onDelete('cascade');
             $table->string('image');
             $table->enum('status', ['pending', 'approved', 'declined'])->default('pending');

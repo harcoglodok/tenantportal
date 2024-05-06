@@ -1,3 +1,6 @@
 RewriteEngine on
 RewriteCond %{REQUEST_URI} !^public
 RewriteRule ^(.*)$ public/$1 [L]
+
+php_value max_execution_time 3000
+php_value memory_limit -1

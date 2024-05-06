@@ -15,7 +15,7 @@ return new class extends Migration
             $table->id();
             $table->foreignId('billing_import_log_id')->constrained('billing_import_logs');
             $table->enum('status', ['success', 'failed'])->default('success');
-            $table->string('message')->nullable();
+            $table->text('message')->nullable();
             $table->timestamps();
         });
     }

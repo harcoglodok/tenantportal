@@ -60,7 +60,8 @@ class Billing extends Model
         'inv_no',
         'month',
         'year',
-        'unit_id',
+        'unit_no',
+        'name',
         's4_mbase_amt',
         's4_mtax_amt',
         'sd_mbase_amt',
@@ -70,6 +71,7 @@ class Billing extends Model
         'electric_current',
         'electric_read',
         'electric_fixed',
+        'electric_mbase',
         'electric_administration',
         'electric_tax',
         'electric_total',
@@ -91,6 +93,8 @@ class Billing extends Model
         'add_charge',
         'previous_transaction',
         'status',
+        'created_by',
+        'updated_by',
     ];
 
     /**
@@ -153,7 +157,7 @@ class Billing extends Model
      */
     public function unit(): BelongsTo
     {
-        return $this->belongsTo(Unit::class);
+        return $this->belongsTo(Unit::class, 'unit_no', 'no_unit');
     }
 
     /**

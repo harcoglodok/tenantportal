@@ -65,7 +65,7 @@ class ComplaintReplyAPIController extends AppBaseController
         $complaintReply = $this->complaintReplyRepository->create($input);
 
         $complaint = Complaint::find($complaintReply->complaint_id);
-        $complaint->update(['status' => 'waiting']);
+        $complaint->update(['status' => 'waiting', 'updated_at' => now()]);
 
         $admins = User::whereIn('role', ['root', 'admin'])->get();
         if ($admins) {

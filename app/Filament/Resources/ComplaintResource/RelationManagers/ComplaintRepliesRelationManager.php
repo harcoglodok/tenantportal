@@ -51,6 +51,7 @@ class ComplaintRepliesRelationManager extends RelationManager
                             $this->sendPushNotification($user->device_token, 'Balasan Kritik/Saran', $record->reply);
                         }
                         $this->getOwnerRecord()->update([
+                            'updated_at' => now(),
                             'updated_by' => auth()->id(),
                             'status' => 'replied',
                         ]);

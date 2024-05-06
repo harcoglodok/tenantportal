@@ -2,30 +2,63 @@
 
 namespace App\Http\Controllers\API\v1;
 
-use App\Http\Controllers\AppBaseController;
-use Illuminate\Http\Request;
-use App\Http\Resources\UserResource;
 use App\Models\User;
-use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Validator;
+use App\Models\Complaint;
+use Illuminate\Http\Request;
+use Illuminate\Support\Carbon;
+use App\Models\ScheduledNotification;
+use App\Http\Controllers\AppBaseController;
 
 class CronAPIController extends AppBaseController
 {
     public function scheduledNotification(Request $request)
     {
-        // TODO: Cron Scheduled Notification
+        $today = Carbon::today();
+        $notifications = ScheduledNotification::whereDate('date', $today)->get();
+        foreach ($notifications as $notification) {
+            $this->sendPushNotificationTopic(
+                'general',
+                $notification->title,
+                $notification->message,
+            );
+        }
         return $this->sendResponse(null, 'Scheduled Notification');
     }
 
     public function birthdayNotification(Request $request)
     {
-        // TODO: Cron Birthday Notification
+        $today = Carbon::today();
+        $users = User::whereMonth('birthdate', $today->month)
+            ->whereDay('birthdate', $today->day)
+            ->get();
+        foreach ($users as $user) {
+            if ($user->device_token != null) {
+                $this->sendPushNotification(
+                    $user->device_token,
+                    'Selamat ulang tahun ' . $user->name,
+                    'Selamat ulang tahun dan sehat selalu',
+                );
+            }
+        }
         return $this->sendResponse(null, 'Bithday Notification');
     }
 
     public function doneComplaint(Request $request)
     {
-        // TODO: Cron Birthday Notification
+        $sevenDaysAgo = Carbon::now()->subDays(7);
+
+        $oldComplaint = Complaint::where('updated_at', '<', $sevenDaysAgo)->where('status', '!=', 'done')->get();
+        foreach ($oldComplaint as $complaint) {
+            $complaint->update(['status' => 'done', 'updated_at' => now()]);
+            $user = $complaint->createdBy;
+            if ($user->device_token != null) {
+                $this->sendPushNotification(
+                    $user->device_token,
+                    'Saran/Kritik Anda diselesaikan oleh system karena tidak ada aktifitas',
+                    '',
+                );
+            }
+        }
         return $this->sendResponse(null, 'Complaint Done');
     }
 }

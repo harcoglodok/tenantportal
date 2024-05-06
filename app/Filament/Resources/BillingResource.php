@@ -84,7 +84,7 @@ class BillingResource extends Resource
                             }),
                         TextEntry::make('service_charge')->placeholder('-')->numeric(),
                         TextEntry::make('sinking_fund')->placeholder('-')->numeric(),
-                        TextEntry::make('add_charge')->placeholder('-'),
+                        TextEntry::make('add_charge')->placeholder('-')->numeric(),
                         TextEntry::make('s4_mbase_amt')->placeholder('-')->numeric(),
                         TextEntry::make('s4_mtax_amt')->placeholder('-')->numeric(),
                         TextEntry::make('sd_mbase_amt')->placeholder('-')->numeric(),

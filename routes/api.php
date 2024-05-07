@@ -2,6 +2,8 @@
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
+use Illuminate\Support\Facades\Artisan;
+use Illuminate\Support\Facades\Storage;
 use App\Http\Controllers\API\v1\AuthAPIController;
 use App\Http\Controllers\API\v1\CronAPIController;
 use App\Http\Controllers\API\v1\UnitAPIController;
@@ -14,7 +16,6 @@ use App\Http\Controllers\API\v1\ComplaintReplyAPIController;
 use App\Http\Controllers\API\v1\ComplaintCategoryAPIController;
 use App\Http\Controllers\API\v1\BillingTransactionAPIController;
 use App\Http\Controllers\API\v1\NotificationCategoryAPIController;
-use Illuminate\Support\Facades\Storage;
 
 /*
 |--------------------------------------------------------------------------
@@ -59,5 +60,5 @@ Route::prefix('v1')->group(function () {
         Route::get('birthday_notification', [CronAPIController::class, 'birthdayNotification']);
         Route::get('done_complaint', [CronAPIController::class, 'doneComplaint']);
     });
-    Route::get('link', fn () => Storage::link());
+    Route::get('link', fn () => Artisan::call('storage:link'));
 });

@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\API\v1;
 
+use App\Models\Unit;
 use App\Models\User;
 use Illuminate\Http\Request;
 use App\Http\Resources\UserResource;
@@ -15,7 +16,7 @@ class AuthAPIController extends AppBaseController
     public function login(Request $request)
     {
         $validator = Validator::make($request->all(), [
-            'email' => 'required|email',
+            'email' => 'email',
             'password' => 'required',
         ]);
 
@@ -23,7 +24,20 @@ class AuthAPIController extends AppBaseController
             return $this->sendError('Failed Login');
         }
 
-        if (Auth::attempt($request->only('email', 'password'))) {
+        $email = $request->email;
+        if ($request->no_unit) {
+            $unit = Unit::where('no_unit', $request->no_unit)->first();
+            if (!$unit) {
+                return $this->sendError('Unit Not Found');
+            }
+            $user = $unit->user();
+            if (!$user) {
+                return $this->sendError('Unit Not Found');
+            }
+            $email = $user->email;
+        }
+
+        if (Auth::attempt(['email' => $email, 'password' => $request->password])) {
             /** @var User $user */
             $user = Auth::user();
             if ($user->verified_at != null) {

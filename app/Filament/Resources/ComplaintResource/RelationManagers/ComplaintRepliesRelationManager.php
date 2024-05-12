@@ -7,8 +7,6 @@ use Filament\Tables;
 use Filament\Forms\Form;
 use Filament\Tables\Table;
 use App\Traits\PushNotification;
-use Illuminate\Database\Eloquent\Builder;
-use Illuminate\Database\Eloquent\SoftDeletingScope;
 use Filament\Resources\RelationManagers\RelationManager;
 
 class ComplaintRepliesRelationManager extends RelationManager
@@ -20,9 +18,11 @@ class ComplaintRepliesRelationManager extends RelationManager
     {
         return $form
             ->schema([
-                Forms\Components\TextInput::make('reply')
-                    ->required()
-                    ->maxLength(255),
+                Forms\Components\Section::make()->schema([
+                    Forms\Components\Textarea::make('reply')
+                        ->required()
+                        ->maxLength(255),
+                ])
             ]);
     }
 
@@ -59,7 +59,7 @@ class ComplaintRepliesRelationManager extends RelationManager
             ])
             ->actions([
                 // Tables\Actions\EditAction::make(),
-                // Tables\Actions\DeleteAction::make(),
+                Tables\Actions\DeleteAction::make(),
             ])
             ->bulkActions([
                 // Tables\Actions\BulkActionGroup::make([

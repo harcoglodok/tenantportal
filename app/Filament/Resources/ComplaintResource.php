@@ -129,11 +129,13 @@ class ComplaintResource extends Resource
                             'replied' => 'info',
                             'done' => 'success',
                         }),
-                    TextEntry::make('createdBy.name'),
-                    TextEntry::make('updatedBy.name'),
                     ImageEntry::make('photo')
                         ->height(100)
                         ->square(),
+                    TextEntry::make('content'),
+                    TextEntry::make(''),
+                    TextEntry::make('createdBy.name'),
+                    TextEntry::make('updatedBy.name'),
                 ])->columns(3),
             ]);
     }

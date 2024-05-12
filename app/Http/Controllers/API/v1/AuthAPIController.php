@@ -30,7 +30,7 @@ class AuthAPIController extends AppBaseController
             if (!$unit) {
                 return $this->sendError('Unit Not Found');
             }
-            $user = $unit->user();
+            $user = $unit->user;
             if (!$user) {
                 return $this->sendError('Unit Not Found');
             }

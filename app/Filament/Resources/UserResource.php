@@ -45,7 +45,7 @@ class UserResource extends Resource
                     ->imageEditorAspectRatios(['1:1']),
                 Forms\Components\TextInput::make('email')
                     ->email()
-                    ->unique()
+                    ->unique(ignoreRecord: true)
                     ->required()
                     ->maxLength(255),
                 Forms\Components\TextInput::make('password')

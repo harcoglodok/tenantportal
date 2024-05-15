@@ -115,6 +115,7 @@ class Billing extends Model
         'electric_current' => 'double',
         'electric_read' => 'double',
         'electric_fixed' => 'double',
+        'electric_mbase' => 'double',
         'electric_administration' => 'double',
         'electric_tax' => 'double',
         'electric_total' => 'double',

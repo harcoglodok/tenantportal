@@ -30,6 +30,7 @@ class BillingResource extends JsonResource
             'electric_current' => $this->electric_current,
             'electric_read' => $this->electric_read,
             'electric_fixed' => $this->electric_fixed,
+            'electric_mbase' => $this->electric_mbase,
             'electric_administration' => $this->electric_administration,
             'electric_tax' => $this->electric_tax,
             'electric_total' => $this->electric_total,

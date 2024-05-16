@@ -12,7 +12,6 @@ class CreateTenant extends CreateRecord
 
     protected function handleRecordCreation(array $data): User
     {
-        $data['password'] = bcrypt($data['password']);
         $data['verified_at'] = now();
         $data['verified_by'] = auth()->user()->id;
         $data['role'] = 'tenant';

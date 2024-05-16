@@ -2,15 +2,18 @@
 
 namespace App\Filament\Resources;
 
+use Filament\Forms;
+use App\Models\User;
+use Filament\Tables;
+use Filament\Forms\Form;
+use Filament\Tables\Table;
+use Filament\Resources\Resource;
+use Filament\Resources\Pages\Page;
+use Illuminate\Support\Facades\Hash;
+use Illuminate\Database\Eloquent\Builder;
+use Filament\Resources\Pages\CreateRecord;
 use App\Filament\Resources\UserResource\Pages;
 use App\Filament\Resources\UserResource\RelationManagers;
-use App\Models\User;
-use Filament\Forms;
-use Filament\Forms\Form;
-use Filament\Resources\Resource;
-use Filament\Tables;
-use Filament\Tables\Table;
-use Illuminate\Database\Eloquent\Builder;
 
 class UserResource extends Resource
 {
@@ -50,9 +53,12 @@ class UserResource extends Resource
                     ->maxLength(255),
                 Forms\Components\TextInput::make('password')
                     ->password()
-                    ->required()
+                    ->required(fn (Page $livewire) => ($livewire instanceof CreateRecord))
+                    ->dehydrateStateUsing(fn ($state) => Hash::make($state))
+                    ->dehydrated(fn ($state) => filled($state))
                     ->maxLength(255)
-                    ->hiddenOn(['view', 'edit']),
+                    ->revealable()
+                    ->hiddenOn(['view']),
             ]);
     }
 

@@ -7,15 +7,18 @@ use Filament\Forms;
 use App\Models\User;
 use Filament\Tables;
 use Filament\Forms\Form;
+use Filament\Pages\Page;
 use Filament\Tables\Table;
 use Filament\Infolists\Infolist;
 use Filament\Resources\Resource;
 use Filament\Tables\Actions\Action;
+use Illuminate\Support\Facades\Hash;
 use Filament\Forms\Components\TextInput;
 use Filament\Notifications\Notification;
 use Filament\Tables\Actions\ActionGroup;
 use Illuminate\Database\Eloquent\Builder;
 use Filament\Infolists\Components\Section;
+use Filament\Resources\Pages\CreateRecord;
 use Filament\Infolists\Components\TextEntry;
 use Filament\Infolists\Components\ImageEntry;
 use App\Filament\Resources\TenantResource\Pages;
@@ -58,8 +61,11 @@ class TenantResource extends Resource
                         ->maxDate(now()),
                     Forms\Components\TextInput::make('password')
                         ->password()
-                        ->required()
+                        ->required(fn (Page $livewire) => ($livewire instanceof CreateRecord))
+                        ->dehydrateStateUsing(fn ($state) => Hash::make($state))
+                        ->dehydrated(fn ($state) => filled($state))
                         ->maxLength(255)
+                        ->revealable()
                         ->hiddenOn(['view']),
                 ])->columns(2)
             ]);

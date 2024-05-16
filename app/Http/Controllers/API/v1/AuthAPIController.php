@@ -7,6 +7,7 @@ use App\Models\User;
 use Illuminate\Http\Request;
 use App\Http\Resources\UserResource;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Hash;
 use Filament\Notifications\Notification;
 use Illuminate\Support\Facades\Validator;
 use App\Http\Controllers\AppBaseController;
@@ -95,7 +96,7 @@ class AuthAPIController extends AppBaseController
             $userData['avatar'] = $avatarPath;
         }
 
-        $userData['password'] = bcrypt($userData['password']);
+        $userData['password'] = Hash::make($userData['password']);
         $userData['role'] = 'tenant';
 
         $user = User::create($userData);

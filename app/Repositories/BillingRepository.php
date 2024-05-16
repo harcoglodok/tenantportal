@@ -9,7 +9,7 @@ use App\Repositories\BaseRepository;
  * Class BillingRepository
  * @package App\Repositories
  * @version April 2, 2024, 9:36 am UTC
-*/
+ */
 
 class BillingRepository extends BaseRepository
 {
@@ -21,7 +21,7 @@ class BillingRepository extends BaseRepository
         'inv_no',
         'month',
         'year',
-        'unit_id',
+        'unit_no',
         's4_mbase_amt',
         's4_mtax_amt',
         'sd_mbase_amt',

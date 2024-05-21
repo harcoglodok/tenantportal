@@ -19,9 +19,13 @@ class MessageImport implements ToCollection, WithHeadingRow
         foreach ($collection as $item) {
             if ($item['tenant_store'] == "*") {
                 $unit = Unit::find($item['created_by']);
+                $photo = '';
+                if ($item['photo']) {
+                    $photo = 'complaints/' . $item['photo'];
+                }
                 Message::create([
                     'title' => $item['title'],
-                    'photo' => '',
+                    'photo' => $photo,
                     'content' => $item['message'],
                     'created_by' => $unit->user_id,
                     'updated_by' => $unit->user_id,

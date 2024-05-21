@@ -20,11 +20,15 @@ class ComplaintImport implements ToCollection, WithHeadingRow
         foreach ($collection as $item) {
             $category = ComplaintCategory::find($item['complaint_type_id']);
             $unit = Unit::find($item['created_by']);
+            $photo = '';
+            if ($item['photo']) {
+                $photo = 'complaints/' . $item['photo'];
+            }
             Complaint::create([
                 'category_id' => $category->id,
                 'title' => 'Komplain ' . $category->title,
                 'content' => $item['content'],
-                'photo' => '',
+                'photo' => $photo,
                 'status' => 'done',
                 'created_by' => $unit->user_id,
                 'updated_by' => $unit->user_id,

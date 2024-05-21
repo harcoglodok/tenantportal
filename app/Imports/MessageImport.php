@@ -21,7 +21,7 @@ class MessageImport implements ToCollection, WithHeadingRow
                 $unit = Unit::find($item['created_by']);
                 $photo = '';
                 if ($item['photo']) {
-                    $photo = 'complaints/' . $item['photo'];
+                    $photo = 'messages/' . $item['photo'];
                 }
                 Message::create([
                     'title' => $item['title'],

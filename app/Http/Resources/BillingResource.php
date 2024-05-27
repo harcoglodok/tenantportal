@@ -21,6 +21,7 @@ class BillingResource extends JsonResource
             'month' => $this->month,
             'year' => $this->year,
             'unit_id' => $this->unit_id,
+            'name' => $this->name,
             's4_mbase_amt' => $this->s4_mbase_amt,
             's4_mtax_amt' => $this->s4_mtax_amt,
             'sd_mbase_amt' => $this->sd_mbase_amt,

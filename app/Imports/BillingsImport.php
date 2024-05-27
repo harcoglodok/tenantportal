@@ -37,7 +37,7 @@ class BillingsImport implements ToCollection, WithHeadingRow
                     ]);
                     $waterTotal = doubleval(trim($row['wf_mbase_amt'])) + doubleval(trim($row['wu_mbase_amt'])) + doubleval(trim($row['wa_mbase_amt'])) + doubleval(trim($row['wa_mtax_amt']));
                     $electricTotal = doubleval(trim($row['eu_mbase_amt']));
-                    $sinkFund = doubleval(trim($row['sink_chrg']));
+                    $sinkFund = doubleval(trim($row['sf_mbase_amt']));
                     $serviceCharge = doubleval(trim($row['serv_chrg']));
                     $total = $electricTotal + $waterTotal + $serviceCharge + $sinkFund;
                     Billing::create([
@@ -65,7 +65,7 @@ class BillingsImport implements ToCollection, WithHeadingRow
                         'water_read' => doubleval(trim($row['wu_read'])),
                         'water_fixed' => doubleval(trim($row['wf_mbase_amt'])),
                         'water_mbase' => doubleval(trim($row['wu_mbase_amt'])),
-                        'water_administration' => 10 * doubleval(trim($row['wa_mtax_amt'])),
+                        'water_administration' => doubleval(trim($row['wa_mbase_amt'])),
                         'water_tax' => doubleval(trim($row['wa_mtax_amt'])),
                         'water_total' => $waterTotal,
                         'total' => $total,

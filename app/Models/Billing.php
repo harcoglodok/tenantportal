@@ -104,6 +104,7 @@ class Billing extends Model
      */
     protected $casts = [
         'inv_no' => 'string',
+        'name' => 'string',
         'month' => 'string',
         'year' => 'string',
         's4_mbase_amt' => 'double',
@@ -119,7 +120,7 @@ class Billing extends Model
         'electric_administration' => 'double',
         'electric_tax' => 'double',
         'electric_total' => 'double',
-        'mcb' => 'double',
+        'mcb' => 'string',
         'water_previous' => 'double',
         'water_current' => 'double',
         'water_read' => 'double',

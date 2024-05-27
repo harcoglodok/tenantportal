@@ -27,7 +27,7 @@ class CronAPIController extends AppBaseController
 
     public function birthdayNotification(Request $request)
     {
-        $today = Carbon::today();
+        $today = Carbon::today()->timezone('Asia/Jakarta');
         $users = User::whereMonth('birthdate', $today->month)
             ->whereDay('birthdate', $today->day)
             ->get();

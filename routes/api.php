@@ -58,6 +58,8 @@ Route::prefix('v1')->group(function () {
     Route::prefix('cron')->group(function () {
         Route::get('scheduled_notification', [CronAPIController::class, 'scheduledNotification']);
         Route::get('birthday_notification', [CronAPIController::class, 'birthdayNotification']);
+        Route::get('birthday_notification_today', [CronAPIController::class, 'birthdayNotificationToday']);
+        Route::get('birthday_notification_check', [CronAPIController::class, 'birthdayNotificationCheck']);
         Route::get('done_complaint', [CronAPIController::class, 'doneComplaint']);
     });
     Route::get('link', fn () => Artisan::call('storage:link'));

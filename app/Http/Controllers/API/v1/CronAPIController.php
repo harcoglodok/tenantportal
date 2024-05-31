@@ -43,6 +43,21 @@ class CronAPIController extends AppBaseController
         return $this->sendResponse(null, 'Bithday Notification');
     }
 
+    public function birthdayNotificationCheck(Request $request)
+    {
+        $today = Carbon::today()->timezone('Asia/Jakarta');
+        $users = User::whereMonth('birthdate', $today->month)
+            ->whereDay('birthdate', $today->day)
+            ->get();
+        return $this->sendResponse($users, 'Bithday Notification');
+    }
+
+    public function birthdayNotificationToday(Request $request)
+    {
+        $today = Carbon::today()->timezone('Asia/Jakarta');
+        dd($today);
+    }
+
     public function doneComplaint(Request $request)
     {
         $sevenDaysAgo = Carbon::now()->subDays(7);

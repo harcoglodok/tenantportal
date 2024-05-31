@@ -2,14 +2,15 @@
 
 namespace App\Http\Controllers\API\v1;
 
+use Response;
+use App\Models\Billing;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
+use App\Http\Resources\BillingResource;
+use App\Repositories\BillingRepository;
+use App\Http\Controllers\AppBaseController;
 use App\Http\Requests\API\CreateBillingAPIRequest;
 use App\Http\Requests\API\UpdateBillingAPIRequest;
-use App\Models\Billing;
-use App\Repositories\BillingRepository;
-use Illuminate\Http\Request;
-use App\Http\Controllers\AppBaseController;
-use App\Http\Resources\BillingResource;
-use Response;
 
 /**
  * Class BillingController
@@ -35,15 +36,20 @@ class BillingAPIController extends AppBaseController
      */
     public function index(Request $request)
     {
-        $billings = $this->billingRepository->all(
-            $request->except(['skip', 'limit']),
-            $request->get('skip'),
-            $request->get('limit'),
-            ['*'],
-            $request->get('sort_by'),
-            $request->get('sort_direction', 'asc'),
-        );
-
+        $billings = Billing::when($request->has("unit_no"), function ($query) use ($request) {
+            $query->where("unit_no", $request->get("unit_no"));
+        })
+            ->when($request->has("unit-user_id"), function ($query) use ($request) {
+                $query->whereHas('unit', function ($query) use ($request) {
+                    $query->where('user_id', $request->get("unit-user_id"));
+                });
+            })
+            ->when($request->has("status"), function ($query) use ($request) {
+                $query->where("status", $request->get("status"));
+            })
+            ->orderBy(DB::raw('CAST(year AS UNSIGNED)'), 'desc')
+            ->orderBy(DB::raw('CAST(month AS UNSIGNED)'), 'desc')
+            ->get();
         return $this->sendResponse(BillingResource::collection($billings), 'Billings retrieved successfully');
     }
 

@@ -35,6 +35,10 @@ class BannerResource extends Resource
                     ->required()
                     ->directory('banners')
                     ->columns(6),
+                Forms\Components\RichEditor::make('content'),
+                Forms\Components\TextInput::make('url')
+                    ->helperText('Jika url diisi maka ketika banner diklik aplikasi akan membuka browser sesuai dengan url yang diisikan')
+                    ->url(),
                 Forms\Components\Toggle::make('status')
                     ->label('Is Active')
                     ->default(true)

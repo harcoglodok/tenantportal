@@ -30,7 +30,9 @@ class Banner extends Model
     public $fillable = [
         'title',
         'banner',
-        'status'
+        'status',
+        'content',
+        'url'
     ];
 
     /**
@@ -41,6 +43,8 @@ class Banner extends Model
     protected $casts = [
         'title' => 'string',
         'banner' => 'string',
+        'content' => 'string',
+        'url' => 'string',
         'status' => 'boolean'
     ];
 
@@ -54,6 +58,4 @@ class Banner extends Model
         'banner' => 'required|image|mimes:jpeg,png,jpg,gif|max:8192',
         'status' => 'required'
     ];
-
-
 }

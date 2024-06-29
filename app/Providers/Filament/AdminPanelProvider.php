@@ -59,7 +59,7 @@ class AdminPanelProvider extends PanelProvider
             ])
             ->brandLogo(asset('images/logo.png'))
             ->brandLogoHeight('3rem')
-            ->brandName('Tenant Portal')
+            ->brandName('Harco Portal')
             ->favicon(asset('images/favicon.ico'));
     }
 }

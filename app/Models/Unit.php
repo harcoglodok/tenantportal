@@ -88,4 +88,14 @@ class Unit extends Model
     {
         return $this->hasMany(Billing::class, 'unit_no', 'no_unit');
     }
+
+    /**
+     * Get all of the complaints for the Unit
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
+    public function complaints(): HasMany
+    {
+        return $this->hasMany(Complaint::class);
+    }
 }

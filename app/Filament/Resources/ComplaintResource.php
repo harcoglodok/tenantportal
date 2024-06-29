@@ -37,6 +37,9 @@ class ComplaintResource extends Resource
                     Forms\Components\Select::make('category_id')
                         ->relationship(name: 'category', titleAttribute: 'title')
                         ->required(),
+                    Forms\Components\Select::make('unit_id')
+                        ->searchable()
+                        ->relationship(name: 'unit', titleAttribute: 'no_unit'),
                     Forms\Components\Textarea::make('content')
                         ->required()
                         ->columnSpanFull(),
@@ -66,6 +69,9 @@ class ComplaintResource extends Resource
                 Tables\Columns\TextColumn::make('no')->rowIndex(),
                 Tables\Columns\TextColumn::make('category.title')
                     ->sortable(),
+                Tables\Columns\TextColumn::make('unit.no_unit')
+                    ->default('-')
+                    ->badge(),
                 Tables\Columns\TextColumn::make('title')
                     ->searchable()
                     ->sortable(),
@@ -134,6 +140,9 @@ class ComplaintResource extends Resource
                         ->square(),
                     TextEntry::make('content'),
                     TextEntry::make(''),
+                    TextEntry::make('unit.no_unit')
+                        ->default('-')
+                        ->badge(),
                     TextEntry::make('createdBy.name'),
                     TextEntry::make('updatedBy.name'),
                 ])->columns(3),

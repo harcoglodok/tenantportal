@@ -34,13 +34,15 @@ class CreateMessage extends CreateRecord
                 $deviceTokens[] = $user->device_token;
             }
         }
-        if ($deviceTokens) {
-            $this->sendPushNotificationMultiple(
-                $deviceTokens,
-                $this->record->title,
-                '',
-                ['id' => $storedDataId],
-            );
+        if ($users) {
+            if ($deviceTokens) {
+                $this->sendPushNotificationMultiple(
+                    $deviceTokens,
+                    $this->record->title,
+                    '',
+                    ['id' => $storedDataId],
+                );
+            }
         } else {
             $this->sendPushNotificationTopic(
                 'global_message',

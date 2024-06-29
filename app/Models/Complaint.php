@@ -37,6 +37,7 @@ class Complaint extends Model
         'content',
         'photo',
         'status',
+        'unit_id',
         'created_by',
         'updated_by'
     ];
@@ -48,6 +49,7 @@ class Complaint extends Model
      */
     protected $casts = [
         'category_id' => 'integer',
+        'unit_id' => 'integer',
         'content' => 'string',
         'status' => 'string',
         'photo' => 'string',
@@ -100,5 +102,15 @@ class Complaint extends Model
     public function replies(): HasMany
     {
         return $this->hasMany(ComplaintReply::class);
+    }
+
+    /**
+     * Get the unit that owns the Complaint
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     */
+    public function unit(): BelongsTo
+    {
+        return $this->belongsTo(Unit::class);
     }
 }

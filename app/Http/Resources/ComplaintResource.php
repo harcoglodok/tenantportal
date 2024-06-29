@@ -28,6 +28,7 @@ class ComplaintResource extends JsonResource
             'created_at' => $this->created_at,
             'updated_at' => $this->updated_at,
             'replies' => ComplaintReplyResource::collection($this->replies),
+            'unit' => new UnitResource($this->unit),
         ];
     }
 }

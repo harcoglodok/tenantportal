@@ -20,7 +20,7 @@ class ListMessages extends ListRecords
     protected function getHeaderActions(): array
     {
         return [
-            ImportAction::make()->importer(MessageImporter::class),
+            // ImportAction::make()->importer(MessageImporter::class),
             Actions\CreateAction::make()
                 ->mutateFormDataUsing(function (array $data): array {
                     $data['created_by'] = auth()->id();

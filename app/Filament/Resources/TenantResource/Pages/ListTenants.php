@@ -15,7 +15,7 @@ class ListTenants extends ListRecords
     protected function getHeaderActions(): array
     {
         return [
-            ImportAction::make()->importer(UserImporter::class),
+            // ImportAction::make()->importer(UserImporter::class),
             Actions\CreateAction::make(),
         ];
     }

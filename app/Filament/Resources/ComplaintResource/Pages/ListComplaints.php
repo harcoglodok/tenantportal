@@ -20,7 +20,7 @@ class ListComplaints extends ListRecords
     protected function getHeaderActions(): array
     {
         return [
-            ImportAction::make()->importer(ComplaintImporter::class),
+            // ImportAction::make()->importer(ComplaintImporter::class),
         ];
     }
 }

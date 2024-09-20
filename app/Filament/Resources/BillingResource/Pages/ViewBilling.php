@@ -2,9 +2,10 @@
 
 namespace App\Filament\Resources\BillingResource\Pages;
 
-use App\Filament\Resources\BillingResource;
 use Filament\Actions;
+use Livewire\Attributes\On;
 use Filament\Resources\Pages\ViewRecord;
+use App\Filament\Resources\BillingResource;
 
 class ViewBilling extends ViewRecord
 {
@@ -16,4 +17,7 @@ class ViewBilling extends ViewRecord
             // Actions\EditAction::make(),
         ];
     }
+
+    #[On('refreshData')]
+    public function refresh(): void {}
 }

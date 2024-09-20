@@ -5,14 +5,14 @@ namespace App\Filament\Resources\BillingResource\Pages;
 use Filament\Actions\Action;
 use App\Imports\BillingsImport;
 use App\Models\BillingImportLog;
-use Filament\Actions\ImportAction;
+use App\Imports\OldBillingImport;
 use App\Models\BillingImportLogData;
 use Maatwebsite\Excel\Facades\Excel;
 use Filament\Notifications\Notification;
 use Filament\Forms\Components\FileUpload;
 use Filament\Resources\Pages\ListRecords;
 use App\Filament\Resources\BillingResource;
-use App\Filament\Imports\OldBillingImporter;
+use App\Jobs\ImportBilling;
 
 class ListBillings extends ListRecords
 {
@@ -39,20 +39,7 @@ class ListBillings extends ListRecords
                         'file' => $data['import']
                     ]);
 
-                    Excel::import(new BillingsImport, $file);
-
-                    $successData = BillingImportLogData::where('billing_import_log_id', $log->id)
-                        ->where('status', 'success')
-                        ->count();
-                    $failedData = BillingImportLogData::where('billing_import_log_id', $log->id)
-                        ->where('status', 'failed')
-                        ->count();
-
-                    Notification::make()
-                        ->success()
-                        ->title('Billings Imported')
-                        ->body('Successfully import ' . $successData . ' Invoice' . ($failedData ? (' & Failed to Import ' . $failedData . ' Invoice') : ''))
-                        ->send();
+                    ImportBilling::dispatch($file);
                 }),
             Action::make('importLogs')
                 ->label('Import Logs')

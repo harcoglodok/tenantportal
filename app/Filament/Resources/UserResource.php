@@ -25,7 +25,7 @@ class UserResource extends Resource
 
     protected static ?string $navigationGroup = 'User Management';
 
-    protected static ?int $navigationSort = 1;
+    protected static ?int $navigationSort = -1;
 
     public static function shouldRegisterNavigation(): bool
     {
@@ -53,9 +53,9 @@ class UserResource extends Resource
                     ->maxLength(255),
                 Forms\Components\TextInput::make('password')
                     ->password()
-                    ->required(fn (Page $livewire) => ($livewire instanceof CreateRecord))
-                    ->dehydrateStateUsing(fn ($state) => Hash::make($state))
-                    ->dehydrated(fn ($state) => filled($state))
+                    ->required(fn(Page $livewire) => ($livewire instanceof CreateRecord))
+                    ->dehydrateStateUsing(fn($state) => Hash::make($state))
+                    ->dehydrated(fn($state) => filled($state))
                     ->maxLength(255)
                     ->revealable()
                     ->hiddenOn(['view']),

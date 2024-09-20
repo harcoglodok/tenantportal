@@ -9,6 +9,8 @@
     "license": "MIT",
     "require": {
         "php": "^8.2",
+        "box/spout": "^3.3",
+        "croustibat/filament-jobs-monitor": "^2.5",
         "doctrine/dbal": "^3.0",
         "filament/filament": "^3.0",
         "filament/spatie-laravel-media-library-plugin": "^3.0",

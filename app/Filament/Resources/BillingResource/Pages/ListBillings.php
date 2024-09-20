@@ -21,7 +21,6 @@ class ListBillings extends ListRecords
     protected function getHeaderActions(): array
     {
         return [
-            // ImportAction::make()->importer(OldBillingImporter::class),
             Action::make('importBillings')
                 ->label('Import Billings')
                 ->color('success')

@@ -15,7 +15,13 @@ class Kernel extends ConsoleKernel
      */
     protected function schedule(Schedule $schedule)
     {
-        // $schedule->command('inspire')->hourly();
+        $schedule->command('queue:restart')
+            ->everyFiveMinutes();
+
+        $schedule->command('queue:work --stop-when-empty --timeout=600')
+            ->withoutOverlapping()
+            ->everyMinute()
+            ->sendOutputTo(storage_path('logs/scheduler.log'));
     }
 
     /**
@@ -25,7 +31,7 @@ class Kernel extends ConsoleKernel
      */
     protected function commands()
     {
-        $this->load(__DIR__.'/Commands');
+        $this->load(__DIR__ . '/Commands');
 
         require base_path('routes/console.php');
     }

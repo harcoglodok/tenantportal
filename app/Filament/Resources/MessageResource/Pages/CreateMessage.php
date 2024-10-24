@@ -30,10 +30,11 @@ class CreateMessage extends CreateRecord
         $users = UserMessage::where('message_id', $storedDataId)->get();
         $deviceTokens = [];
         foreach ($users as $user) {
-            if ($user->device_token != null) {
-                $deviceTokens[] = $user->device_token;
+            if ($user->user->device_token != null) {
+                $deviceTokens[] = $user->user->device_token;
             }
         }
+
         if ($users) {
             if ($deviceTokens) {
                 $this->sendPushNotificationMultiple(

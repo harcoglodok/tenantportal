@@ -2,92 +2,64 @@
 
 namespace App\Traits;
 
+use Kreait\Firebase\Factory;
+use Kreait\Firebase\Messaging\CloudMessage;
+
 
 trait PushNotification
 {
     public function sendPushNotification($deviceToken, $title, $body, $data = null)
     {
-        $url = 'https://fcm.googleapis.com/fcm/send';
-        $data = [
-            'to' => $deviceToken,
+        $factory = (new Factory)->withServiceAccount(storage_path('firebase_credentials.json'));
+        $messaging = $factory->createMessaging();
+
+        $message = CloudMessage::fromArray([
+            'token' => $deviceToken,
             'notification' => [
                 'title' => $title,
                 'body' => $body,
             ],
             'data' => $data,
-        ];
-        $jsonData = json_encode($data);
-        $ch = curl_init();
-        curl_setopt($ch, CURLOPT_URL, $url);
-        curl_setopt($ch, CURLOPT_POST, true);
-        curl_setopt($ch, CURLOPT_HTTPHEADER, [
-            'Authorization: key=' . env('PUSHNOTIFKEY'),
-            'Content-Type: application/json',
         ]);
-        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-        curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, 0);
-        curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
-        curl_setopt($ch, CURLOPT_POSTFIELDS, $jsonData);
-        $response = curl_exec($ch);
-        curl_close($ch);
+
+        $result = $messaging->send($message);
 
         return response()->json(['message' => 'Push notification sent successfully']);
     }
 
     public function sendPushNotificationMultiple($deviceTokens, $title, $body, $data = null)
     {
-        $url = 'https://fcm.googleapis.com/fcm/send';
-        $data = [
-            'registration_ids' => $deviceTokens,
+        $factory = (new Factory)->withServiceAccount(storage_path('firebase_credentials.json'));
+        $messaging = $factory->createMessaging();
+
+        $message = CloudMessage::fromArray([
             'notification' => [
                 'title' => $title,
                 'body' => $body,
             ],
             'data' => $data,
-        ];
-        $jsonData = json_encode($data);
-        $ch = curl_init();
-        curl_setopt($ch, CURLOPT_URL, $url);
-        curl_setopt($ch, CURLOPT_POST, true);
-        curl_setopt($ch, CURLOPT_HTTPHEADER, [
-            'Authorization: key=' . env('PUSHNOTIFKEY'),
-            'Content-Type: application/json',
         ]);
-        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-        curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, 0);
-        curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
-        curl_setopt($ch, CURLOPT_POSTFIELDS, $jsonData);
-        $response = curl_exec($ch);
-        curl_close($ch);
+
+        $result = $messaging->sendMulticast($message, $deviceTokens);
 
         return response()->json(['message' => 'Push notification sent successfully']);
     }
 
     public function sendPushNotificationTopic($topic, $title, $body, $data = null)
     {
-        $url = 'https://fcm.googleapis.com/fcm/send';
-        $data = [
-            'to' => '/topics/' . $topic,
+        $factory = (new Factory)->withServiceAccount(storage_path('firebase_credentials.json'));
+        $messaging = $factory->createMessaging();
+
+        $message = CloudMessage::fromArray([
+            'topic' => $topic,
             'notification' => [
                 'title' => $title,
                 'body' => $body,
             ],
             'data' => $data,
-        ];
-        $jsonData = json_encode($data);
-        $ch = curl_init();
-        curl_setopt($ch, CURLOPT_URL, $url);
-        curl_setopt($ch, CURLOPT_POST, true);
-        curl_setopt($ch, CURLOPT_HTTPHEADER, [
-            'Authorization: key=' . env('PUSHNOTIFKEY'),
-            'Content-Type: application/json',
         ]);
-        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-        curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, 0);
-        curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
-        curl_setopt($ch, CURLOPT_POSTFIELDS, $jsonData);
-        $response = curl_exec($ch);
-        curl_close($ch);
+
+        $result = $messaging->send($message);
 
         return response()->json(['message' => 'Push notification sent successfully']);
     }

@@ -34,8 +34,7 @@ class CreateMessage extends CreateRecord
                 $deviceTokens[] = $user->user->device_token;
             }
         }
-
-        if ($users) {
+        if (!$users->isEmpty()) {
             if ($deviceTokens) {
                 $this->sendPushNotificationMultiple(
                     $deviceTokens,

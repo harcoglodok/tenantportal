@@ -2,17 +2,13 @@
 
 namespace App\Filament\Resources\BillingResource\Pages;
 
-use Filament\Actions\Action;
-use App\Imports\BillingsImport;
-use App\Models\BillingImportLog;
-use App\Imports\OldBillingImport;
-use App\Models\BillingImportLogData;
-use Maatwebsite\Excel\Facades\Excel;
-use Filament\Notifications\Notification;
-use Filament\Forms\Components\FileUpload;
-use Filament\Resources\Pages\ListRecords;
 use App\Filament\Resources\BillingResource;
 use App\Jobs\ImportBilling;
+use App\Models\BillingImportLog;
+use Filament\Actions\Action;
+use Filament\Forms\Components\FileUpload;
+use Filament\Notifications\Notification;
+use Filament\Resources\Pages\ListRecords;
 
 class ListBillings extends ListRecords
 {
@@ -34,10 +30,15 @@ class ListBillings extends ListRecords
                 ->action(function (array $data) {
                     $file = public_path("storage/" . $data['import']);
 
-                    $log = BillingImportLog::create([
+                    BillingImportLog::create([
                         'user_id' => auth()->user()->id,
                         'file' => $data['import']
                     ]);
+                    Notification::make()
+                        ->success()
+                        ->title('Billings Import')
+                        ->body('Proses Import Berjalan di background')
+                        ->send();
 
                     ImportBilling::dispatch($file);
                 }),

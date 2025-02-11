@@ -2,18 +2,19 @@
 
 namespace App\Jobs;
 
-use App\Models\Unit;
 use App\Models\Billing;
-use Illuminate\Bus\Queueable;
 use App\Models\BillingImportLog;
-use App\Traits\PushNotification;
 use App\Models\BillingImportLogData;
-use Illuminate\Queue\SerializesModels;
+use App\Models\Unit;
+use App\Models\User;
+use App\Traits\PushNotification;
+use Box\Spout\Reader\Common\Creator\ReaderEntityFactory;
 use Filament\Notifications\Notification;
-use Illuminate\Queue\InteractsWithQueue;
+use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
-use Box\Spout\Reader\Common\Creator\ReaderEntityFactory;
+use Illuminate\Queue\InteractsWithQueue;
+use Illuminate\Queue\SerializesModels;
 
 class ImportBilling implements ShouldQueue
 {
@@ -84,7 +85,6 @@ class ImportBilling implements ShouldQueue
             if ($sheet->getIndex() === 0) {
                 $no = 0;
                 foreach ($sheet->getRowIterator() as $row) {
-                    // perulangan membaca baris excel
                     $cells = $row->toArray();
                     if ($no == 0) {
                         $pastData = Billing::where("month", $cells[6])
@@ -95,6 +95,7 @@ class ImportBilling implements ShouldQueue
                                 ->where("year", $cells[7])
                                 ->delete();
                         }
+                        continue;
                     }
                     $unit = $this->validateRow($cells[1]);
                     if (!empty($unit)) {
@@ -194,11 +195,12 @@ class ImportBilling implements ShouldQueue
             ->where('status', 'failed')
             ->count();
 
+        $admins = User::whereIn('role', ['root', 'admin'])->get();
         Notification::make()
             ->success()
             ->title('Billings Imported')
             ->body('Successfully import ' . $successData . ' Invoice' . ($failedData ? (' & Failed to Import ' . $failedData . ' Invoice') : ''))
-            ->send();
+            ->sendToDatabase($admins);
     }
 
     protected function getMonthNameIndonesia($monthNumber)
